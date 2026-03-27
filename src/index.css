@@ -6,10 +6,12 @@
   :root { scroll-behavior: smooth; scroll-padding-top: 72px; }
   html  { -webkit-font-smoothing: antialiased; }
   body  { @apply font-sans text-gray-900 bg-white overflow-x-hidden; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   *     { @apply box-border; }
   ::selection { background: #0f2557; color: #fff; }
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   :focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2; }
 }
 

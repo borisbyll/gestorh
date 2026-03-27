@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link }                from 'react-router-dom'
 import { Helmet }              from 'react-helmet-async'
-import { Clock, Eye, Search }  from 'lucide-react'
+import { Clock, Eye, Search, FileText }  from 'lucide-react'
 import { supabase }            from '@/lib/supabase'
 import { formatDate }          from '@/lib/utils'
 import Reveal                  from '@/components/ui/Reveal'
@@ -45,7 +45,7 @@ function PostCard({ post }: { post: Post }) {
       <div className="h-48 bg-gradient-to-br from-navy to-navy-mid relative overflow-hidden flex-shrink-0">
         {post.cover_url
           ? <img src={post.cover_url} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"/>
-          : <div className="w-full h-full flex items-center justify-center"><span className="text-5xl opacity-30">📝</span></div>
+          : <div className="w-full h-full flex items-center justify-center"><FileText size={40} className="text-white/20"/></div>
         }
         <span className={`absolute top-3 left-3 text-[.65rem] font-extrabold tracking-widest uppercase px-3 py-1 rounded-full ${color}`}>
           {post.category}
@@ -100,7 +100,7 @@ export default function BlogPage() {
         <meta name="description" content="Conseils experts en RH, psychologie, coaching et bien-être au travail."/>
       </Helmet>
 
-      <div className="bg-gradient-to-br from-navy-deep to-navy-mid py-24 px-5 text-center relative overflow-hidden">
+      <div className="bg-gradient-to-br from-navy-deep to-navy-mid py-10 md:py-14 px-5 text-center relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue/20 blur-3xl"/>
         </div>
@@ -118,7 +118,7 @@ export default function BlogPage() {
             <input value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Rechercher…" className="input !py-2.5 !pl-9 !text-sm"/>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0">
+          <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
             {CATS.map(c => (
               <button key={c} onClick={() => setCat(c)}
                 className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -138,7 +138,7 @@ export default function BlogPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-24 text-gray-400">
-            <p className="text-5xl mb-4">🔍</p>
+            <Search size={40} className="text-gray-300 mx-auto mb-4"/>
             <p className="font-bold text-lg">Aucun article trouvé</p>
           </div>
         ) : (

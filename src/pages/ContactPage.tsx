@@ -65,7 +65,7 @@ export default function ContactPage() {
         <meta name="description" content="Contactez le cabinet GESTORH à Lomé, Togo."/>
       </Helmet>
 
-      <div className="bg-gradient-to-br from-navy-deep to-navy py-24 px-5 text-center relative overflow-hidden">
+      <div className="bg-gradient-to-br from-navy-deep to-navy py-10 md:py-14 px-5 text-center relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue/20 blur-3xl"/>
         </div>

@@ -37,19 +37,13 @@ const EMPTY: Post = {
   views:0, cover_url:null, created_at:'', seo_title:'', seo_desc:'', seo_keyword:''
 }
 
-/* ── Appel Claude API ── */
+/* ── Appel IA via Edge Function sécurisée ── */
 async function callClaude(prompt: string): Promise<string> {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model:      'claude-sonnet-4-20250514',
-      max_tokens: 2000,
-      messages:   [{ role: 'user', content: prompt }],
-    }),
+  const { data, error } = await supabase.functions.invoke('blog-ai', {
+    body: { prompt },
   })
-  const data = await res.json()
-  return data.content?.[0]?.text || ''
+  if (error) throw new Error(error.message || 'Erreur IA')
+  return data?.content || ''
 }
 
 export default function BlogAdminPage() {

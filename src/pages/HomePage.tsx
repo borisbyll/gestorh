@@ -120,7 +120,7 @@ export default function HomePage() {
       </Helmet>
 
       {/* ═══ HERO ═══ */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      <section className="relative min-h-[62vh] md:min-h-[70vh] flex items-center overflow-hidden">
         <div ref={heroRef} className="absolute inset-0 bg-cover bg-center will-change-transform"
           style={{ backgroundImage: "url('/hero.jpg')" }}/>
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/95 via-navy/85 to-navy/20"/>

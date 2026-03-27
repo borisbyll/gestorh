@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Helmet }                from 'react-helmet-async'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Clock, ArrowRight, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Clock, ArrowRight, CheckCircle, Flame, Wind, Sparkles, Brain, Target, BarChart3, Users, Compass, Heart, Shield as ShieldIcon, AlertCircle, AlertTriangle } from 'lucide-react'
 import { Link }                  from 'react-router-dom'
 import { supabase }              from '@/lib/supabase'
 import { nanoid, cn }            from '@/lib/utils'
@@ -225,6 +225,19 @@ const TESTS: Test[] = [
   },
 ]
 
+const ICON_MAP: Record<string, React.ElementType> = {
+  burnout:         Flame,
+  anxiety:         Wind,
+  selfesteem:      Sparkles,
+  eq:              Brain,
+  leadership:      Target,
+  org_performance: BarChart3,
+  team:            Users,
+  ikigai:          Compass,
+  couple:          Heart,
+  resilience:      ShieldIcon,
+}
+
 const CATS = ['Tous', 'Bien-être', 'Carrière', 'Organisation', 'Relations']
 
 interface RunState { test: Test; idx: number; score: number }
@@ -244,9 +257,9 @@ interface ModalResult {
 }
 
 const LEVEL_STYLES = {
-  danger:  { border: 'border-red-300',   bg: 'bg-red-50',   text: 'text-red-700',   badge: 'bg-red-100 text-red-700',   bar: 'bg-red-500',   icon: '🚨' },
-  warning: { border: 'border-amber-300', bg: 'bg-amber-50', text: 'text-amber-700', badge: 'bg-amber-100 text-amber-700', bar: 'bg-amber-500', icon: '⚠️' },
-  success: { border: 'border-green-300', bg: 'bg-green-50', text: 'text-green-700', badge: 'bg-green-100 text-green-700', bar: 'bg-green-500', icon: '✅' },
+  danger:  { border: 'border-red-300',   bg: 'bg-red-50',   text: 'text-red-700',   badge: 'bg-red-100 text-red-700',   bar: 'bg-red-500',   Icon: AlertCircle  },
+  warning: { border: 'border-amber-300', bg: 'bg-amber-50', text: 'text-amber-700', badge: 'bg-amber-100 text-amber-700', bar: 'bg-amber-500', Icon: AlertTriangle },
+  success: { border: 'border-green-300', bg: 'bg-green-50', text: 'text-green-700', badge: 'bg-green-100 text-green-700', bar: 'bg-green-500', Icon: CheckCircle   },
 }
 
 const CAT_COLORS: Record<string, string> = {
@@ -262,6 +275,58 @@ export default function TestsPage() {
   const [modalResult, setModalResult]= useState<ModalResult | null>(null)
   const [answered,    setAnswered]   = useState(false)
   const [leadEmail,   setLeadEmail]  = useState<string | null>(null)
+
+  // Restaurer un résultat en attente après connexion (sessionStorage → TestLeadModal)
+  useEffect(() => {
+    const raw = sessionStorage.getItem('pending_test_result')
+    if (!raw) return
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!data.session?.user) return
+      sessionStorage.removeItem('pending_test_result')
+      try {
+        const result = JSON.parse(raw) as ModalResult
+        const email  = data.session.user.email || ''
+        try {
+          const { data: profile } = await supabase
+            .from('user_profiles').select('nom, phone, profession')
+            .eq('id', data.session.user.id).single()
+          await supabase.from('test_leads').insert({
+            nom: profile?.nom || email, email,
+            phone: profile?.phone || '', profession: profile?.profession || '',
+            test_key: result.testKey, test_title: result.testTitle,
+            score: result.score, max_score: result.maxScore, percent: result.pct,
+            result_name: result.resName, result_level: result.resLevel,
+            advice: result.advice, cta: result.cta,
+            rdv_offered: result.resLevel === 'danger',
+          })
+          await supabase.functions.invoke('email-proxy', {
+            body: JSON.stringify({
+              type: 'test_results', to: email,
+              data: { nom: profile?.nom || email, testTitle: result.testTitle,
+                testIcon: result.testIcon, score: String(result.pct),
+                resName: result.resName, resLevel: result.resLevel,
+                advice: result.advice, actions: result.actions.join('||'),
+                cta: result.cta, rdvOffered: result.resLevel === 'danger' ? 'true' : 'false' },
+            }),
+          })
+          if (result.resLevel === 'danger') {
+            await supabase.functions.invoke('email-proxy', {
+              body: JSON.stringify({
+                type: 'test_alert_admin', to: 'contact@gestorh.tg',
+                data: { nom: profile?.nom || '', email, phone: profile?.phone || '-',
+                  profession: profile?.profession || '-', testTitle: result.testTitle,
+                  score: String(result.pct), resName: result.resName },
+              }),
+            })
+          }
+        } catch (e) { console.error(e) }
+        setModalResult(result)
+        setLeadEmail(email)
+      } catch (e) {
+        console.error(e)
+      }
+    })
+  }, [])
 
   const filtered = TESTS.filter(t => cat === 'Tous' || t.cat === cat)
 
@@ -471,7 +536,7 @@ export default function TestsPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className={`card p-8 border-2 ${s.border}`}>
               <div className="text-center mb-6">
-                <div className="text-5xl mb-3">{s.icon}</div>
+                <div className="mb-3"><s.Icon size={48} className={s.text}/></div>
                 <div className={`inline-block text-xs font-extrabold tracking-widest uppercase px-4 py-1.5 rounded-full mb-3 ${s.badge}`}>
                   {modalResult.testTitle}
                 </div>
@@ -541,7 +606,7 @@ export default function TestsPage() {
         )}
       </AnimatePresence>
 
-      <div className="bg-gradient-to-br from-navy-deep to-navy-mid py-24 px-5 text-center relative overflow-hidden">
+      <div className="bg-gradient-to-br from-navy-deep to-navy-mid py-10 md:py-14 px-5 text-center relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue/20 blur-3xl"/>
           <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-brand/10 blur-3xl"/>
@@ -561,7 +626,7 @@ export default function TestsPage() {
       </div>
 
       <div className="bg-white border-b border-gray-200 sticky top-[72px] z-10">
-        <div className="wrap py-4 flex gap-2 overflow-x-auto">
+        <div className="wrap py-3 flex gap-2 overflow-x-auto scrollbar-hide pb-1">
           {CATS.map(c => (
             <button key={c} onClick={() => setCat(c)}
               className={`flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${

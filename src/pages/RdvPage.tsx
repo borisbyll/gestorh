@@ -254,7 +254,7 @@ export default function RdvPage() {
         <meta name="description" content="Réservez votre consultation avec GESTORH en ligne en quelques minutes."/>
       </Helmet>
 
-      <div className="bg-gradient-to-br from-navy-deep to-navy py-20 px-5 text-center">
+      <div className="bg-gradient-to-br from-navy-deep to-navy py-10 md:py-14 px-5 text-center">
         <span className="badge mb-4">Réservation en ligne</span>
         <h1 className="h1 text-white mb-3">Prendre <span className="text-gradient">Rendez-vous</span></h1>
         <p className="text-white/50 text-base max-w-md mx-auto">3 étapes simples · Confirmation par email · Créneaux en temps réel</p>

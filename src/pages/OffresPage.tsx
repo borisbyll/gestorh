@@ -167,7 +167,7 @@ export default function OffresPage() {
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-white/5 pointer-events-none" />
         <div className="absolute right-10 top-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full border border-white/5 pointer-events-none" />
 
-        <div className="wrap relative z-10 py-24">
+        <div className="wrap relative z-10 py-10 md:py-14">
           <div className="max-w-3xl">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
               <span className="badge mb-6">Nos Offres & Services</span>

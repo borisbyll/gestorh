@@ -87,7 +87,13 @@ serve(async (req) => {
     }
 
     // 6. Sanitiser les données
-    const sanitize = (str: string) => str.replace(/<script[^>]*>.*?<\/script>/gi, "").slice(0, 5000)
+    const sanitize = (str: string) => str
+      .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
+      .replace(/<object[\s\S]*?<\/object>/gi, "")
+      .replace(/on\w+\s*=\s*["'][^"']*["']/gi, "")
+      .replace(/javascript:/gi, "")
+      .slice(0, 2000)
     if (payload.data) {
       for (const key of Object.keys(payload.data)) {
         payload.data[key] = sanitize(String(payload.data[key]))

@@ -10,11 +10,11 @@ import TestLeadModal             from '@/components/tests/TestLeadModal'
 
 interface Question { q: string; a: string[]; p: number[] }
 interface Result   { min: number; max: number; name: string; level: 'danger' | 'warning' | 'success'; advice: string; actions: string[]; cta: string }
-interface Test     { key: string; title: string; icon: string; desc: string; cat: string; duration: number; questions: Question[]; results: Result[] }
+interface Test     { key: string; title: string; desc: string; cat: string; duration: number; questions: Question[]; results: Result[] }
 
 const TESTS: Test[] = [
   {
-    key: 'burnout', cat: 'Bien-être', icon: '🔥', duration: 4,
+    key: 'burnout', cat: 'Bien-être', duration: 4,
     title: 'Épuisement Professionnel',
     desc:  'Basé sur l\'inventaire clinique de Maslach (MBI). Détecte les 3 dimensions du burn-out.',
     questions: [
@@ -35,7 +35,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'anxiety', cat: 'Bien-être', icon: '🧘', duration: 4,
+    key: 'anxiety', cat: 'Bien-être', duration: 4,
     title: 'Niveau d\'Anxiété',
     desc:  'Inspiré du GAD-7. Évalue votre niveau d\'anxiété et son impact sur votre quotidien.',
     questions: [
@@ -56,7 +56,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'selfesteem', cat: 'Bien-être', icon: '💎', duration: 4,
+    key: 'selfesteem', cat: 'Bien-être', duration: 4,
     title: 'Estime de Soi',
     desc:  'Basé sur l\'échelle de Rosenberg. Mesure votre rapport à vous-même.',
     questions: [
@@ -77,7 +77,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'eq', cat: 'Carrière', icon: '🧠', duration: 5,
+    key: 'eq', cat: 'Carrière', duration: 5,
     title: 'Intelligence Émotionnelle',
     desc:  'Basé sur le modèle de Goleman. Évalue conscience de soi, maîtrise, empathie et relations.',
     questions: [
@@ -98,7 +98,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'leadership', cat: 'Carrière', icon: '🎯', duration: 4,
+    key: 'leadership', cat: 'Carrière', duration: 4,
     title: 'Style de Leadership',
     desc:  'Grille de Blake & Mouton. Identifie votre style dominant et votre potentiel.',
     questions: [
@@ -119,7 +119,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'org_performance', cat: 'Organisation', icon: '📊', duration: 5,
+    key: 'org_performance', cat: 'Organisation', duration: 5,
     title: 'Performance Organisationnelle',
     desc:  'Audit stratégique de la maturité de votre organisation.',
     questions: [
@@ -140,7 +140,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'team', cat: 'Organisation', icon: '👥', duration: 4,
+    key: 'team', cat: 'Organisation', duration: 4,
     title: 'Cohésion d\'Équipe',
     desc:  'Basé sur le modèle Lencioni. Analyse confiance, conflits, engagement et résultats.',
     questions: [
@@ -161,7 +161,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'ikigai', cat: 'Carrière', icon: '🧭', duration: 4,
+    key: 'ikigai', cat: 'Carrière', duration: 4,
     title: 'Alignement Professionnel',
     desc:  'Concept Ikigai. Mesure l\'adéquation entre talents, valeurs, mission et rémunération.',
     questions: [
@@ -182,7 +182,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'couple', cat: 'Relations', icon: '💑', duration: 5,
+    key: 'couple', cat: 'Relations', duration: 5,
     title: 'Harmonie de Couple',
     desc:  'Basé sur la théorie de Gottman. Évalue les piliers d\'une relation durable.',
     questions: [
@@ -203,7 +203,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'resilience', cat: 'Bien-être', icon: '💪', duration: 4,
+    key: 'resilience', cat: 'Bien-être', duration: 4,
     title: 'Résilience Psychologique',
     desc:  'Basé sur l\'échelle Connor-Davidson. Mesure votre capacité à rebondir.',
     questions: [
@@ -246,7 +246,7 @@ interface ModalResult {
   testKey:   string
   testTitle: string
   testCat:   string
-  testIcon:  string
+  testIcon:  string   // kept for email templates (uses testKey value)
   resName:   string
   resLevel:  'danger' | 'warning' | 'success'
   advice:    string
@@ -359,7 +359,7 @@ export default function TestsPage() {
           testKey:   run.test.key,
           testTitle: run.test.title,
           testCat:   run.test.cat,
-          testIcon:  run.test.icon,
+          testIcon:  run.test.key,
           resName:   res.name,
           resLevel:  res.level,
           advice:    res.advice,
@@ -415,7 +415,7 @@ export default function TestsPage() {
                 data: {
                   nom:        profile?.nom || session.user.email || '',
                   testTitle:  run.test.title,
-                  testIcon:   run.test.icon,
+                  testIcon:   run.test.key,
                   score:      String(pct),
                   resName:    res.name,
                   resLevel:   res.level,
@@ -646,7 +646,7 @@ export default function TestsPage() {
                 className="card group p-7 text-left w-full transition-all duration-300 hover:-translate-y-2 hover:shadow-hover hover:border-transparent relative overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand to-blue scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 rounded-t-3xl"/>
                 <div className="flex items-start justify-between mb-4">
-                  <span className="text-4xl">{t.icon}</span>
+                  {(() => { const TIcon = ICON_MAP[t.key]; return TIcon ? <TIcon size={32} className="text-navy/70"/> : null })()}
                   <span className={`text-[.65rem] font-extrabold tracking-widest uppercase px-3 py-1 rounded-full ${CAT_COLORS[t.cat] || 'bg-gray-100 text-gray-700'}`}>
                     {t.cat}
                   </span>

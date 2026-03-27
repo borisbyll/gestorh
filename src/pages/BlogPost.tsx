@@ -1,7 +1,7 @@
 import { useState, useEffect }  from 'react'
 import { useParams, Link }      from 'react-router-dom'
 import { Helmet }               from 'react-helmet-async'
-import { ArrowLeft, Clock, Eye, Calendar, Check, Facebook, Linkedin, MessageCircle, Link as LinkIcon } from 'lucide-react'
+import { ArrowLeft, Clock, Eye, Calendar, Check, Facebook, Linkedin, MessageCircle, Link as LinkIcon, FileText } from 'lucide-react'
 import { supabase }             from '@/lib/supabase'
 import { formatDate }           from '@/lib/utils'
 import NewsletterForm           from '@/components/newsletter/NewsletterForm'
@@ -125,7 +125,7 @@ export default function BlogPost() {
 
   if (!post) return (
     <div className="wrap py-32 text-center">
-      <p className="text-6xl mb-6">📄</p>
+      <FileText size={56} className="text-gray-300 mb-6 mx-auto" />
       <h1 className="h2 mb-4">Article introuvable</h1>
       <Link to="/blog" className="btn-navy">Retour au blog</Link>
     </div>
@@ -185,7 +185,7 @@ export default function BlogPost() {
         {/* Cover */}
         {post.cover_url
           ? <img src={post.cover_url} alt={post.title} className="w-full h-64 md:h-80 object-cover rounded-3xl mb-10 border border-gray-200"/>
-          : <div className="w-full h-48 rounded-3xl mb-10 bg-gradient-to-br from-navy to-navy-mid flex items-center justify-center"><span className="text-6xl opacity-30">📝</span></div>
+          : <div className="w-full h-48 rounded-3xl mb-10 bg-gradient-to-br from-navy to-navy-mid flex items-center justify-center"><FileText size={48} className="text-white/30" /></div>
         }
 
         {/* Contenu */}
@@ -245,7 +245,7 @@ export default function BlogPost() {
                     <div className="h-32 bg-gradient-to-br from-navy to-navy-mid relative overflow-hidden">
                       {r.cover_url
                         ? <img src={r.cover_url} alt={r.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
-                        : <div className="w-full h-full flex items-center justify-center"><span className="text-3xl opacity-30">📝</span></div>
+                        : <div className="w-full h-full flex items-center justify-center"><FileText size={28} className="text-white/30" /></div>
                       }
                     </div>
                     <div className="p-4">

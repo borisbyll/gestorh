@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { TrendingUp, Mail, Phone, Star, X, Check, AlertTriangle, ChevronDown } from 'lucide-react'
+import { TrendingUp, Mail, Phone, Star, X, Check, AlertTriangle, AlertCircle, CheckCircle, ChevronDown, Target } from 'lucide-react'
 import { supabase }   from '@/lib/supabase'
 import { formatDate } from '@/lib/utils'
 import toast          from 'react-hot-toast'
@@ -28,9 +28,9 @@ interface Lead {
 }
 
 const LEVEL = {
-  danger:  { label: 'Critique', bg: 'bg-red-100',   text: 'text-red-700',   icon: '🚨' },
-  warning: { label: 'Modéré',   bg: 'bg-amber-100', text: 'text-amber-700', icon: '⚠️' },
-  success: { label: 'Positif',  bg: 'bg-green-100', text: 'text-green-700', icon: '✅' },
+  danger:  { label: 'Critique', bg: 'bg-red-100',   text: 'text-red-700',   Icon: AlertCircle   },
+  warning: { label: 'Modéré',   bg: 'bg-amber-100', text: 'text-amber-700', Icon: AlertTriangle },
+  success: { label: 'Positif',  bg: 'bg-green-100', text: 'text-green-700', Icon: CheckCircle   },
 }
 
 const SUPABASE_URL      = (import.meta as any).env.VITE_SUPABASE_URL as string
@@ -253,7 +253,7 @@ export default function LeadsAdminPage() {
             [1,2,3].map(i => <div key={i} className="h-24 bg-gray-100 rounded-2xl animate-pulse"/>)
           ) : filtered.length === 0 ? (
             <div className="card p-12 text-center">
-              <p className="text-4xl mb-3">🎯</p>
+              <Target size={32} className="text-gray-300 mb-3 mx-auto" />
               <p className="font-bold text-gray-700">Aucun lead</p>
             </div>
           ) : filtered.map(lead => {
@@ -270,7 +270,7 @@ export default function LeadsAdminPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <span className={`text-[.65rem] font-extrabold tracking-widest uppercase px-2.5 py-0.5 rounded-full ${l.bg} ${l.text}`}>
-                          {l.icon} {l.label}
+                          <l.Icon size={10} className="inline mr-0.5" /> {l.label}
                         </span>
                         {lead.converted && (
                           <span className="text-[.65rem] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">

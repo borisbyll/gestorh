@@ -4,7 +4,7 @@ import { Helmet }       from 'react-helmet-async'
 import { useForm }      from 'react-hook-form'
 import { zodResolver }  from '@hookform/resolvers/zod'
 import { z }            from 'zod'
-import { Eye, EyeOff, UserPlus } from 'lucide-react'
+import { Eye, EyeOff, UserPlus, Search, Mail, Target } from 'lucide-react'
 import { supabase }     from '@/lib/supabase'
 import { sendEmail }    from '@/lib/sendEmail'
 import { nanoid }       from '@/lib/utils'
@@ -191,12 +191,12 @@ const needsConfirmation = !authData.session
 
           <div className="mt-6 grid grid-cols-3 gap-3">
             {[
-              { icon: '🔍', label: 'Analyse complète' },
-              { icon: '📧', label: 'Suivi personnalisé' },
-              { icon: '🎯', label: 'Recommandations' },
-            ].map(({ icon, label }) => (
+              { Icon: Search, label: 'Analyse complète' },
+              { Icon: Mail,   label: 'Suivi personnalisé' },
+              { Icon: Target, label: 'Recommandations' },
+            ].map(({ Icon, label }) => (
               <div key={label} className="text-center p-3 bg-white rounded-2xl border border-gray-200">
-                <div className="text-2xl mb-1">{icon}</div>
+                <Icon size={20} className="text-navy mx-auto mb-1" />
                 <p className="text-xs font-semibold text-gray-600">{label}</p>
               </div>
             ))}

@@ -5,7 +5,10 @@ import { motion, useInView } from 'framer-motion'
 import {
   ArrowRight, TrendingUp, Heart, Users, Lightbulb,
   Award, Clock, ChevronDown, CheckCircle,
-  Target, Zap, Shield, BarChart3, Star
+  Target, Zap, Shield, BarChart3, Star,
+  Lock, FlaskConical, FileText, BookOpen, HardDrive,
+  Building2, GraduationCap, Handshake, Briefcase, Rocket,
+  Anchor, User, Sparkles
 } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 import WaButton from '@/components/ui/WaButton'
@@ -60,21 +63,21 @@ const coachingCollectif = [
 
 const packs = [
   {
-    key: 'or', label: 'PACK OR', emoji: '🌟', sessions: "12 séances · 1h", tagline: 'Expertise Totale',
+    key: 'or', label: 'PACK OR', Icon: Star, sessions: "12 séances · 1h", tagline: 'Expertise Totale',
     desc: "Diagnostic complet, exploration profonde et livraison d'un nouveau projet professionnel clé en main.",
     services: ['Bilan personnel approfondi', 'Bilan de formation', 'Exploration des compétences', "Recherche d'alternatives", 'Rédaction du projet professionnel'],
     resultat: 'Profil approfondi & parcours adapté éclairé',
     accent: '#f2a93b', bg: 'from-amber-50 to-yellow-50', border: 'border-amber-200', featured: true,
   },
   {
-    key: 'bronze', label: 'PACK BRONZE', emoji: '⚓', sessions: "8 séances · 1h", tagline: "L'Essentiel",
+    key: 'bronze', label: 'PACK BRONZE', Icon: Anchor, sessions: "8 séances · 1h", tagline: "L'Essentiel",
     desc: "Découverte du profil et élaboration d'un projet professionnel structuré.",
     services: ['Bilan personnel & de formation', 'Exploration des compétences'],
     resultat: 'Profil découvert & projet professionnel élaboré',
     accent: '#cd7f32', bg: 'from-orange-50 to-amber-50', border: 'border-orange-200', featured: false,
   },
   {
-    key: 'argent', label: 'PACK ARGENT', emoji: '⚡', sessions: "4 séances · 1h", tagline: 'Le Tremplin',
+    key: 'argent', label: 'PACK ARGENT', Icon: Zap, sessions: "4 séances · 1h", tagline: 'Le Tremplin',
     desc: 'Bilan rapide de profil pour une prise de décision éclairée.',
     services: ['Bilan personnel', 'Bilan professionnel'],
     resultat: 'Découverte des profils perso/pro',
@@ -102,26 +105,26 @@ const formations = [
 ]
 
 const modalites = [
-  { duree: '1 Jour',  pack: 'Pack 1', avantage: 'Support de formation + 1 séance de coaching de suivi', icon: '📄' },
-  { duree: '3 Jours', pack: 'Pack 2', avantage: "Support + e-book d'approfondissement exclusif", icon: '📚' },
-  { duree: '5 Jours', pack: 'Pack 3', avantage: 'Support + Clé USB avec dossier complet', icon: '💾' },
+  { duree: '1 Jour',  pack: 'Pack 1', avantage: 'Support de formation + 1 séance de coaching de suivi', Icon: FileText  },
+  { duree: '3 Jours', pack: 'Pack 2', avantage: "Support + e-book d'approfondissement exclusif",        Icon: BookOpen  },
+  { duree: '5 Jours', pack: 'Pack 3', avantage: 'Support + Clé USB avec dossier complet',               Icon: HardDrive },
 ]
 
 const refs = [
   {
-    cat: 'SOCIÉTÉS & ENTREPRISES', icon: '🏢', color: 'border-brand',
+    cat: 'SOCIÉTÉS & ENTREPRISES', Icon: Building2, color: 'border-brand',
     items: ['BB LOME', 'CFAO MOTORS', 'NOVATECH', 'DIGI JOB', 'GADEDE SARL', 'CMS LE JADE', 'UNIPACK', 'CFSP', 'CABINET UPDATE CONSEIL', 'EMERGENCE SARL', 'IFBE SOLUTIONS', 'GVA', 'KOKO INTERNATIONAL'],
   },
   {
-    cat: 'ÉCOLES & FORMATION', icon: '🎓', color: 'border-blue-400',
+    cat: 'ÉCOLES & FORMATION', Icon: GraduationCap, color: 'border-blue-400',
     items: ['LBS', 'DEFITECH', 'ESGIS', 'ESIBA', 'ISAGES', 'IFF AFRIQUE'],
   },
   {
-    cat: 'ONG & ASSOCIATIONS', icon: '🤝', color: 'border-teal-400',
+    cat: 'ONG & ASSOCIATIONS', Icon: Handshake, color: 'border-teal-400',
     items: ['LIONS CLUB', 'ROTARY CLUB', 'WILDAF', 'ONG ANGE', 'MIAWODO', 'MIVO ÉNERGIE', 'PDS AFRIQUE', 'CENTRE NAOUSSI', 'FONDACIO', 'SICHEM/AGRO-DR'],
   },
   {
-    cat: 'COMMUNAUTÉS RELIGIEUSES', icon: '⛪', color: 'border-emerald-400',
+    cat: 'COMMUNAUTÉS RELIGIEUSES', Icon: Heart, color: 'border-emerald-400',
     items: ['SMA', 'SŒURS FRANCISCAINES', 'COMMUNAUTÉ SAINT JEAN', 'MISSIONNAIRES COMBONIENS', 'PETITES SŒURS STE FAMILLE'],
   },
 ]
@@ -191,13 +194,13 @@ export default function OffresPage() {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.55 }}
             className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-16">
             {[
-              { val: '+10 ans', label: "d'expertise",  icon: '⭐' },
-              { val: '+40',    label: 'partenaires',   icon: '🤝' },
-              { val: '4',      label: 'pôles métier',  icon: '🎯' },
-              { val: '100%',   label: 'sur mesure',    icon: '✨' },
+              { val: '+10 ans', label: "d'expertise",  Icon: Star     },
+              { val: '+40',    label: 'partenaires',   Icon: Users    },
+              { val: '4',      label: 'pôles métier',  Icon: Target   },
+              { val: '100%',   label: 'sur mesure',    Icon: Sparkles },
             ].map(k => (
               <div key={k.label} className="bg-white/8 backdrop-blur-sm border border-white/10 rounded-2xl px-4 py-4 text-center">
-                <div className="text-xl mb-1">{k.icon}</div>
+                <k.Icon size={18} className="text-white/60 mx-auto mb-1" />
                 <div className="text-2xl font-black text-white">{k.val}</div>
                 <div className="text-white/50 text-xs font-medium mt-0.5">{k.label}</div>
               </div>
@@ -223,15 +226,15 @@ export default function OffresPage() {
           </Reveal>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: '🎯', title: 'Sur Mesure',            desc: 'Chaque solution adaptée à votre situation',       color: 'bg-brand/10', border: 'border-brand/20' },
-              { icon: '🔬', title: 'Approche Scientifique', desc: 'Méthodes validées cliniquement et certifiées',    color: 'bg-blue-50',  border: 'border-blue-200' },
-              { icon: '🔒', title: 'Confidentialité',       desc: 'Discrétion absolue garantie à chaque étape',     color: 'bg-teal-50',  border: 'border-teal-200' },
-              { icon: '📈', title: 'Impact Mesurable',      desc: 'Des résultats concrets que vous pouvez évaluer', color: 'bg-green-50', border: 'border-green-200' },
+              { Icon: Target,       title: 'Sur Mesure',            desc: 'Chaque solution adaptée à votre situation',       color: 'bg-brand/10 text-brand',     border: 'border-brand/20' },
+              { Icon: FlaskConical, title: 'Approche Scientifique', desc: 'Méthodes validées cliniquement et certifiées',    color: 'bg-blue-50 text-blue-600',   border: 'border-blue-200' },
+              { Icon: Lock,         title: 'Confidentialité',       desc: 'Discrétion absolue garantie à chaque étape',     color: 'bg-teal-50 text-teal-600',   border: 'border-teal-200' },
+              { Icon: TrendingUp,   title: 'Impact Mesurable',      desc: 'Des résultats concrets que vous pouvez évaluer', color: 'bg-green-50 text-green-600', border: 'border-green-200' },
             ].map((v, i) => (
               <Reveal key={v.title} delay={i * 0.08}>
                 <motion.div whileHover={{ y: -6, scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}
                   className={`card p-6 text-center h-full border ${v.border} cursor-default`}>
-                  <div className={`w-14 h-14 ${v.color} rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4`}>{v.icon}</div>
+                  <div className={`w-14 h-14 ${v.color} rounded-2xl flex items-center justify-center mx-auto mb-4`}><v.Icon size={24} /></div>
                   <h3 className="font-black text-navy text-sm mb-2">{v.title}</h3>
                   <p className="text-gray-500 text-xs leading-relaxed">{v.desc}</p>
                 </motion.div>
@@ -247,7 +250,7 @@ export default function OffresPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-14">
             <Reveal>
               <div>
-                <Pill label="Pôle 1" icon={<span className="text-xs">👤</span>} />
+                <Pill label="Pôle 1" icon={<User size={12} />} />
                 <h2 className="h2 mb-4">Coaching Professionnel<br /><span className="text-gradient">Personnalisé</span></h2>
                 <p className="text-gray-600 leading-relaxed mb-6">Un accompagnement individuel sur mesure pour optimiser votre trajectoire et trouver votre plénitude professionnelle.</p>
                 <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -331,7 +334,7 @@ export default function OffresPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <Reveal>
               <div>
-                <Pill label="Pôle 2" icon={<span className="text-xs">👥</span>} />
+                <Pill label="Pôle 2" icon={<Users size={12} />} />
                 <h2 className="h2 text-white mb-4">Leadership &<br /><span className="text-gradient">Synergie Collective</span></h2>
                 <p className="text-white/60 leading-relaxed mb-8">Des interventions ciblées pour managers et responsables souhaitant transformer leur équipe en force vive.</p>
                 <div className="flex items-center gap-6">
@@ -378,14 +381,14 @@ export default function OffresPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
             {[
-              { tag: 'Cursus & Formation', icon: '📚', title: "Doute sur l'orientation",   text: 'Accompagnement stratégique vers un changement de filière cohérent.', bgCard: 'from-blue-50 to-indigo-50', border: 'border-blue-200', tagColor: 'text-blue-600 bg-blue-100' },
-              { tag: 'Poste & Fonction',   icon: '💼', title: 'Inadéquation au poste',     text: "Identification des leviers pour un changement de poste ou de fonction réussi.", bgCard: 'from-violet-50 to-purple-50', border: 'border-violet-200', tagColor: 'text-violet-600 bg-violet-100' },
-              { tag: 'Carrière',           icon: '🚀', title: 'Stagnation professionnelle',text: 'Déblocage des potentiels pour une évolution de carrière dynamique.',         bgCard: 'from-teal-50 to-cyan-50',   border: 'border-teal-200',   tagColor: 'text-teal-600 bg-teal-100' },
+              { tag: 'Cursus & Formation', Icon: BookOpen, iconColor: 'text-blue-600',   title: "Doute sur l'orientation",   text: 'Accompagnement stratégique vers un changement de filière cohérent.', bgCard: 'from-blue-50 to-indigo-50', border: 'border-blue-200', tagColor: 'text-blue-600 bg-blue-100' },
+              { tag: 'Poste & Fonction',   Icon: Briefcase, iconColor: 'text-violet-600', title: 'Inadéquation au poste',     text: "Identification des leviers pour un changement de poste ou de fonction réussi.", bgCard: 'from-violet-50 to-purple-50', border: 'border-violet-200', tagColor: 'text-violet-600 bg-violet-100' },
+              { tag: 'Carrière',           Icon: Rocket,    iconColor: 'text-teal-600',   title: 'Stagnation professionnelle',text: 'Déblocage des potentiels pour une évolution de carrière dynamique.',         bgCard: 'from-teal-50 to-cyan-50',   border: 'border-teal-200',   tagColor: 'text-teal-600 bg-teal-100' },
             ].map((item, i) => (
               <Reveal key={item.title} delay={i * 0.1}>
                 <motion.div whileHover={{ y: -6 }} transition={{ type: 'spring', stiffness: 250 }}
                   className={`card bg-gradient-to-b ${item.bgCard} to-white border ${item.border} p-6 h-full cursor-default`}>
-                  <div className="text-3xl mb-3">{item.icon}</div>
+                  <item.Icon size={28} className={`${item.iconColor} mb-3`} />
                   <span className={`text-[.6rem] font-extrabold uppercase tracking-widest px-2 py-1 rounded-full ${item.tagColor} mb-3 inline-block`}>{item.tag}</span>
                   <h3 className="font-black text-navy text-base mb-3">{item.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed"><strong className="text-navy font-bold">Bénéfice : </strong>{item.text}</p>
@@ -413,7 +416,7 @@ export default function OffresPage() {
                     </div>
                   )}
                   <div className="bg-navy px-5 py-5">
-                    <div className="text-2xl mb-2">{p.emoji}</div>
+                    <p.Icon size={22} className="text-white mb-2" />
                     <p className="font-black text-white text-base mb-0.5">{p.label}</p>
                     <p className="text-xs font-bold" style={{ color: p.accent }}>{p.tagline}</p>
                   </div>
@@ -448,7 +451,7 @@ export default function OffresPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-14">
             <Reveal>
               <div>
-                <Pill label="Pôle 4" icon={<span className="text-xs">📖</span>} />
+                <Pill label="Pôle 4" icon={<BookOpen size={12} />} />
                 <h2 className="h2 mb-4">Formations Stratégiques<br /><span className="text-gradient">Spécifiques</span></h2>
                 <p className="text-gray-600 leading-relaxed">Des programmes sur mesure pour entreprises, institutions et services publics. Conçus pour générer un impact immédiat et mesurable.</p>
               </div>
@@ -459,7 +462,7 @@ export default function OffresPage() {
                   <motion.div key={m.duree} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }} transition={{ delay: i * 0.12, duration: 0.5 }}
                     whileHover={{ y: -4 }} className="card p-4 text-center cursor-default">
-                    <div className="text-2xl mb-2">{m.icon}</div>
+                    <m.Icon size={22} className="text-brand mx-auto mb-2" />
                     <p className="text-xl font-black text-brand">{m.duree}</p>
                     <p className="text-xs font-bold text-navy mb-2">{m.pack}</p>
                     <p className="text-gray-500 text-[0.65rem] leading-relaxed">{m.avantage}</p>
@@ -513,7 +516,7 @@ export default function OffresPage() {
         <div className="wrap">
           <Reveal>
             <div className="text-center mb-14">
-              <Pill label="Confiance" icon={<span className="text-xs">🏆</span>} />
+              <Pill label="Confiance" icon={<Award size={12} />} />
               <h2 className="h2 mb-3">Ils Nous Font Confiance</h2>
               <p className="text-gray-500">Plus de <strong className="text-navy">40 structures partenaires</strong> au Togo et en Afrique de l'Ouest.</p>
             </div>
@@ -525,7 +528,7 @@ export default function OffresPage() {
                 <motion.div whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 250 }}
                   className={`card border-t-4 ${group.color} p-5 h-full cursor-default`}>
                   <div className="flex items-center gap-2 mb-5">
-                    <span className="text-2xl">{group.icon}</span>
+                    <group.Icon size={18} className="text-navy flex-shrink-0" />
                     <h3 className="font-black text-navy text-xs uppercase tracking-widest leading-tight">{group.cat}</h3>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
@@ -544,14 +547,14 @@ export default function OffresPage() {
           <Reveal delay={0.15}>
             <div className="bg-gradient-to-r from-navy to-[#1a3a7a] rounded-3xl p-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
               {[
-                { val: '+40', label: 'Structures partenaires', icon: '🤝' },
-                { val: '+10 ans', label: "D'expertise",       icon: '⭐' },
-                { val: '4',   label: 'Secteurs couverts',     icon: '🎯' },
-                { val: '100%',label: 'Satisfaction clients',  icon: '💯' },
+                { val: '+40', label: 'Structures partenaires', Icon: Users    },
+                { val: '+10 ans', label: "D'expertise",       Icon: Star     },
+                { val: '4',   label: 'Secteurs couverts',     Icon: Target   },
+                { val: '100%',label: 'Satisfaction clients',  Icon: Award    },
               ].map((k, i) => (
                 <motion.div key={k.label} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.4 }}>
-                  <div className="text-2xl mb-1">{k.icon}</div>
+                  <k.Icon size={20} className="text-white/50 mx-auto mb-1" />
                   <div className="text-3xl font-black text-white mb-1">{k.val}</div>
                   <div className="text-white/50 text-xs font-medium">{k.label}</div>
                 </motion.div>
@@ -569,7 +572,9 @@ export default function OffresPage() {
         <div className="wrap text-center relative z-10">
           <Reveal>
             <div className="max-w-2xl mx-auto">
-              <div className="text-4xl mb-6">🚀</div>
+              <div className="w-16 h-16 bg-brand/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Rocket size={30} className="text-brand" />
+              </div>
               <h2 className="h2 text-white mb-4">Prêt à passer à <span className="text-gradient">l'étape supérieure ?</span></h2>
               <p className="text-white/60 leading-relaxed mb-8">Contactez-nous pour un diagnostic initial gratuit. Notre équipe d'experts est disponible pour construire ensemble votre trajectoire de succès.</p>
               <div className="flex flex-wrap justify-center gap-4 mb-8">

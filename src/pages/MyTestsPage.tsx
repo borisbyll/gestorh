@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Helmet }              from 'react-helmet-async'
 import { motion }              from 'framer-motion'
 import { Link }                from 'react-router-dom'
-import { ArrowRight, Calendar, TrendingUp, Award, LogIn } from 'lucide-react'
+import { ArrowRight, Calendar, TrendingUp, Award, LogIn, Flame, Wind, Gem, Brain, Target, BarChart3, Users, Compass, Heart, Dumbbell, AlertCircle, AlertTriangle, CheckCircle, ClipboardList, Trophy, Lock } from 'lucide-react'
 import { supabase }            from '@/lib/supabase'
 import { formatDate }          from '@/lib/utils'
 
@@ -21,22 +21,22 @@ interface TestLead {
 }
 
 const LEVEL_STYLES = {
-  danger:  { bg: 'bg-red-50',   border: 'border-red-200',   text: 'text-red-600',   badge: 'bg-red-100 text-red-700',   bar: 'bg-red-500',   icon: '🚨', label: 'Critique'  },
-  warning: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-600', badge: 'bg-amber-100 text-amber-700', bar: 'bg-amber-500', icon: '⚠️', label: 'Modéré'   },
-  success: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-600', badge: 'bg-green-100 text-green-700', bar: 'bg-green-500', icon: '✅', label: 'Positif'  },
+  danger:  { bg: 'bg-red-50',   border: 'border-red-200',   text: 'text-red-600',   badge: 'bg-red-100 text-red-700',   bar: 'bg-red-500',   Icon: AlertCircle,   label: 'Critique'  },
+  warning: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-600', badge: 'bg-amber-100 text-amber-700', bar: 'bg-amber-500', Icon: AlertTriangle, label: 'Modéré'   },
+  success: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-600', badge: 'bg-green-100 text-green-700', bar: 'bg-green-500', Icon: CheckCircle,   label: 'Positif'  },
 }
 
-const TEST_ICONS: Record<string, string> = {
-  burnout:          '🔥',
-  anxiety:          '🧘',
-  selfesteem:       '💎',
-  eq:               '🧠',
-  leadership:       '🎯',
-  org_performance:  '📊',
-  team:             '👥',
-  ikigai:           '🧭',
-  couple:           '💑',
-  resilience:       '💪',
+const TEST_ICONS: Record<string, React.ElementType> = {
+  burnout:          Flame,
+  anxiety:          Wind,
+  selfesteem:       Gem,
+  eq:               Brain,
+  leadership:       Target,
+  org_performance:  BarChart3,
+  team:             Users,
+  ikigai:           Compass,
+  couple:           Heart,
+  resilience:       Dumbbell,
 }
 
 export default function MyTestsPage() {
@@ -77,7 +77,7 @@ export default function MyTestsPage() {
   if (!user) return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="card p-12 max-w-md text-center">
-        <div className="text-5xl mb-4">🔒</div>
+        <Lock size={40} className="text-gray-300 mb-4 mx-auto" />
         <h2 className="text-xl font-black text-gray-900 mb-3">Connexion requise</h2>
         <p className="text-gray-500 text-sm mb-6">
           Connectez-vous pour accéder à vos résultats de tests.
@@ -123,13 +123,13 @@ export default function MyTestsPage() {
         {tests.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {[
-              { label: 'Tests passés',    value: tests.length,     icon: '📋', color: 'text-blue-600'   },
-              { label: 'Score moyen',     value: avgScore + '%',   icon: '📊', color: 'text-navy'       },
-              { label: 'Cas critiques',   value: critCount,        icon: '🚨', color: 'text-red-600'    },
-              { label: 'Meilleur score',  value: bestTest ? bestTest.percent + '%' : '-', icon: '🏆', color: 'text-green-600' },
-            ].map(({ label, value, icon, color }) => (
+              { label: 'Tests passés',    value: tests.length,     Icon: ClipboardList, color: 'text-blue-600'   },
+              { label: 'Score moyen',     value: avgScore + '%',   Icon: BarChart3,     color: 'text-navy'       },
+              { label: 'Cas critiques',   value: critCount,        Icon: AlertCircle,   color: 'text-red-600'    },
+              { label: 'Meilleur score',  value: bestTest ? bestTest.percent + '%' : '-', Icon: Trophy, color: 'text-green-600' },
+            ].map(({ label, value, Icon, color }) => (
               <div key={label} className="card p-5 text-center">
-                <div className="text-2xl mb-2">{icon}</div>
+                <Icon size={22} className={`${color} mx-auto mb-2`}/>
                 <div className={`text-2xl font-black ${color}`}>{value}</div>
                 <div className="text-xs text-gray-500 font-medium mt-0.5">{label}</div>
               </div>
@@ -140,7 +140,7 @@ export default function MyTestsPage() {
         {/* Liste des tests */}
         {tests.length === 0 ? (
           <div className="card p-16 text-center">
-            <div className="text-6xl mb-5">📋</div>
+            <ClipboardList size={48} className="text-gray-300 mb-5 mx-auto" />
             <h2 className="text-xl font-black text-gray-900 mb-3">Aucun test passé</h2>
             <p className="text-gray-500 text-sm mb-8 max-w-sm mx-auto">
               Découvrez nos diagnostics psychologiques gratuits et obtenez des recommandations personnalisées.
@@ -175,13 +175,13 @@ export default function MyTestsPage() {
                       className="w-full p-5 text-left">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-4 flex-1 min-w-0">
-                          <div className={`w-12 h-12 rounded-2xl ${s.bg} flex items-center justify-center text-2xl flex-shrink-0`}>
-                            {TEST_ICONS[test.test_key] || '📊'}
+                          <div className={`w-12 h-12 rounded-2xl ${s.bg} flex items-center justify-center flex-shrink-0 ${s.text}`}>
+                            {(() => { const TIcon = TEST_ICONS[test.test_key]; return TIcon ? <TIcon size={24}/> : <BarChart3 size={24}/>})()}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className={`text-[.65rem] font-extrabold tracking-widest uppercase px-2.5 py-0.5 rounded-full ${s.badge}`}>
-                                {s.icon} {s.label}
+                              <span className={`inline-flex items-center gap-1 text-[.65rem] font-extrabold tracking-widest uppercase px-2.5 py-0.5 rounded-full ${s.badge}`}>
+                                <s.Icon size={10}/> {s.label}
                               </span>
                             </div>
                             <h3 className="font-black text-gray-900 text-sm">{test.test_title}</h3>

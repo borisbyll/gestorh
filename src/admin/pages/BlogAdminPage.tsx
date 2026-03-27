@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion }          from 'framer-motion'
-import { Plus, Edit, Trash2, Eye, EyeOff, Save, X, Clock, Image, Sparkles, Loader2, ChevronDown } from 'lucide-react'
+import { Plus, Edit, Trash2, Eye, EyeOff, Save, X, Clock, Image, Sparkles, Loader2, ChevronDown, FileText } from 'lucide-react'
 import { supabase }        from '@/lib/supabase'
 import { formatDate }      from '@/lib/utils'
 import RichEditor          from '@/admin/components/RichEditor'
@@ -545,7 +545,7 @@ Retourne uniquement le résumé, sans guillemets ni ponctuation finale.`
         <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-20 bg-gray-100 rounded-2xl animate-pulse"/>)}</div>
       ) : posts.length === 0 ? (
         <div className="card p-16 text-center">
-          <p className="text-4xl mb-4">📝</p>
+          <FileText size={36} className="text-gray-300 mb-4 mx-auto" />
           <h3 className="font-black text-lg mb-2">Aucun article</h3>
           <p className="text-gray-500 text-sm mb-6">Créez votre premier article</p>
           <button onClick={openNew} className="btn-navy mx-auto"><Plus size={15}/> Créer un article</button>

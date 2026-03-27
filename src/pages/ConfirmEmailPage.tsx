@@ -65,7 +65,7 @@ export default function ConfirmEmailPage() {
         if (refreshData.session?.user?.email_confirmed_at) {
           await handleConfirmed()
         } else {
-          toast('Email pas encore confirmé. Vérifiez votre boîte mail.', { icon: '📧' })
+          toast('Email pas encore confirmé. Vérifiez votre boîte mail.')
         }
       }
     } finally {

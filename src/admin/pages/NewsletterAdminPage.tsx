@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   Mail, Trash2, Users, Send,
-  Clock, CheckCircle, ChevronDown, ChevronUp
+  Clock, CheckCircle, ChevronDown, ChevronUp, Inbox
 } from 'lucide-react'
 import { supabase }   from '@/lib/supabase'
 import { sendEmail }  from '@/lib/sendEmail'
@@ -202,14 +202,14 @@ export default function NewsletterAdminPage() {
 
       <div className="flex gap-1 mb-5 bg-gray-100 p-1 rounded-xl w-fit">
         {([
-          { key: 'abonnes',   label: `👥 Abonnés (${subscribers.length})` },
-          { key: 'campagnes', label: `📨 Campagnes (${campaigns.length})` },
+          { key: 'abonnes',   Icon: Users, label: `Abonnés (${subscribers.length})` },
+          { key: 'campagnes', Icon: Inbox, label: `Campagnes (${campaigns.length})` },
         ] as const).map(t => (
           <button key={t.key} onClick={() => setActiveTab(t.key)}
             className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
               activeTab === t.key ? 'bg-white shadow-sm text-navy' : 'text-gray-500 hover:text-gray-700'
             }`}>
-            {t.label}
+            <t.Icon size={13} className="inline mr-1.5 -mt-0.5" />{t.label}
           </button>
         ))}
       </div>
@@ -231,7 +231,7 @@ export default function NewsletterAdminPage() {
             <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-14 bg-gray-100 rounded-2xl animate-pulse"/>)}</div>
           ) : filtered.length === 0 ? (
             <div className="card p-12 text-center">
-              <p className="text-4xl mb-3">📧</p>
+              <Mail size={36} className="text-gray-300 mb-3 mx-auto" />
               <p className="font-bold text-gray-700">Aucun abonné</p>
             </div>
           ) : (

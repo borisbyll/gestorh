@@ -3,7 +3,12 @@
     "allow": [
       "mcp__claude_ai_Supabase__execute_sql",
       "mcp__claude_ai_Supabase__get_edge_function",
-      "mcp__claude_ai_Supabase__deploy_edge_function"
+      "mcp__claude_ai_Supabase__deploy_edge_function",
+      "Bash(grep -r \"''👤''\" --include=\"*.tsx\" --include=\"*.ts\" -n)",
+      "Bash(grep -r \"''👥''\" --include=\"*.tsx\" --include=\"*.ts\" -n)",
+      "Bash(grep -rn [🔥🧘💎🧠🎯📊👥🧭💑💪🚨⚠️✅📋🏆🔒📝📄📧📚💾🏢🎓🤝⛪⭐✨🔬📈💼🚀🌟⚓⚡🔍📖📨👤💯🎯] c:/Users/HP/Desktop/gestorh/src/)",
+      "Bash(grep \"\\\\.tsx\\\\?$\")",
+      "Bash(npx tsc:*)"
     ]
   }
 }

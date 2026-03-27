@@ -8,7 +8,12 @@
       "Bash(grep -r \"''👥''\" --include=\"*.tsx\" --include=\"*.ts\" -n)",
       "Bash(grep -rn [🔥🧘💎🧠🎯📊👥🧭💑💪🚨⚠️✅📋🏆🔒📝📄📧📚💾🏢🎓🤝⛪⭐✨🔬📈💼🚀🌟⚓⚡🔍📖📨👤💯🎯] c:/Users/HP/Desktop/gestorh/src/)",
       "Bash(grep \"\\\\.tsx\\\\?$\")",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(sed -i \"s/key: ''burnout'', cat: ''Bien-être'', duration: 4,/key: ''burnout'', cat: ''Bien-être'', icon: ''🔥'', duration: 4,/\" src/pages/TestsPage.tsx)",
+      "Bash(sed -i \"s/key: ''anxiety'', cat: ''Bien-être'', duration: 4,/key: ''anxiety'', cat: ''Bien-être'', icon: ''🧘'', duration: 4,/\" src/pages/TestsPage.tsx)",
+      "Bash(sed -i \"s/key: ''selfesteem'', cat: ''Bien-être'', duration: 4,/key: ''selfesteem'', cat: ''Bien-être'', icon: ''💎'', duration: 4,/\" src/pages/TestsPage.tsx)",
+      "Bash(sed -i \"s/key: ''eq'', cat: ''Bien-être'', duration: 5,/key: ''eq'', cat: ''Bien-être'', icon: ''🧠'', duration: 5,/\" src/pages/TestsPage.tsx)",
+      "Bash(sed -i \"s/key: ''leadership'', cat: ''Leadership'', duration: 5,/key: ''leadership'', cat: ''Leadership'', icon: ''🎯'', duration: 5,/\" src/pages/TestsPage.tsx)"
     ]
   }
 }

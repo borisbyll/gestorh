@@ -10,11 +10,11 @@ import TestLeadModal             from '@/components/tests/TestLeadModal'
 
 interface Question { q: string; a: string[]; p: number[] }
 interface Result   { min: number; max: number; name: string; level: 'danger' | 'warning' | 'success'; advice: string; actions: string[]; cta: string }
-interface Test     { key: string; title: string; desc: string; cat: string; duration: number; questions: Question[]; results: Result[] }
+interface Test     { key: string; title: string; icon: string; desc: string; cat: string; duration: number; questions: Question[]; results: Result[] }
 
 const TESTS: Test[] = [
   {
-    key: 'burnout', cat: 'Bien-être', duration: 4,
+    key: 'burnout', cat: 'Bien-être', icon: '🔥', duration: 4,
     title: 'Épuisement Professionnel',
     desc:  'Basé sur l\'inventaire clinique de Maslach (MBI). Détecte les 3 dimensions du burn-out.',
     questions: [
@@ -35,7 +35,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'anxiety', cat: 'Bien-être', duration: 4,
+    key: 'anxiety', cat: 'Bien-être', icon: '🧘', duration: 4,
     title: 'Niveau d\'Anxiété',
     desc:  'Inspiré du GAD-7. Évalue votre niveau d\'anxiété et son impact sur votre quotidien.',
     questions: [
@@ -56,7 +56,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'selfesteem', cat: 'Bien-être', duration: 4,
+    key: 'selfesteem', cat: 'Bien-être', icon: '💎', duration: 4,
     title: 'Estime de Soi',
     desc:  'Basé sur l\'échelle de Rosenberg. Mesure votre rapport à vous-même.',
     questions: [
@@ -77,7 +77,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'eq', cat: 'Carrière', duration: 5,
+    key: 'eq', cat: 'Carrière', icon: '🧠', duration: 5,
     title: 'Intelligence Émotionnelle',
     desc:  'Basé sur le modèle de Goleman. Évalue conscience de soi, maîtrise, empathie et relations.',
     questions: [
@@ -98,7 +98,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'leadership', cat: 'Carrière', duration: 4,
+    key: 'leadership', cat: 'Carrière', icon: '🎯', duration: 4,
     title: 'Style de Leadership',
     desc:  'Grille de Blake & Mouton. Identifie votre style dominant et votre potentiel.',
     questions: [
@@ -119,7 +119,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'org_performance', cat: 'Organisation', duration: 5,
+    key: 'org_performance', cat: 'Organisation', icon: '📊', duration: 5,
     title: 'Performance Organisationnelle',
     desc:  'Audit stratégique de la maturité de votre organisation.',
     questions: [
@@ -140,7 +140,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'team', cat: 'Organisation', duration: 4,
+    key: 'team', cat: 'Organisation', icon: '👥', duration: 4,
     title: 'Cohésion d\'Équipe',
     desc:  'Basé sur le modèle Lencioni. Analyse confiance, conflits, engagement et résultats.',
     questions: [
@@ -161,7 +161,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'ikigai', cat: 'Carrière', duration: 4,
+    key: 'ikigai', cat: 'Carrière', icon: '🧭', duration: 4,
     title: 'Alignement Professionnel',
     desc:  'Concept Ikigai. Mesure l\'adéquation entre talents, valeurs, mission et rémunération.',
     questions: [
@@ -182,7 +182,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'couple', cat: 'Relations', duration: 5,
+    key: 'couple', cat: 'Relations', icon: '💑', duration: 5,
     title: 'Harmonie de Couple',
     desc:  'Basé sur la théorie de Gottman. Évalue les piliers d\'une relation durable.',
     questions: [
@@ -203,7 +203,7 @@ const TESTS: Test[] = [
     ],
   },
   {
-    key: 'resilience', cat: 'Bien-être', duration: 4,
+    key: 'resilience', cat: 'Bien-être', icon: '💪', duration: 4,
     title: 'Résilience Psychologique',
     desc:  'Basé sur l\'échelle Connor-Davidson. Mesure votre capacité à rebondir.',
     questions: [

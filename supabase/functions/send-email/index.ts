@@ -52,7 +52,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
           <strong>Service :</strong> ${data.service || "-"}<br>
           <strong>Date souhaitée :</strong> ${data.date || "-"}
         </div>
-        <a href="https://gestorh.tg/contact" class="btn">Nous contacter</a>`,
+        <a href="https://cabinet-gestorh.com/contact" class="btn">Nous contacter</a>`,
       )
 
     case "rdv_confirmed":
@@ -75,7 +75,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
         `<h2>Rendez-vous annulé</h2>
         <p>Bonjour <strong>${data.nom || ""},</strong></p>
         <p>Votre rendez-vous du <strong>${data.date || "-"}</strong> a été annulé. Contactez-nous pour reprogrammer.</p>
-        <a href="https://gestorh.tg/rendez-vous" class="btn">Reprendre RDV</a>`,
+        <a href="https://cabinet-gestorh.com/rendez-vous" class="btn">Reprendre RDV</a>`,
       )
 
     case "contact_received":
@@ -98,7 +98,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
         `<h2>Bienvenue !</h2>
         <p>Bonjour <strong>${data.nom || ""},</strong></p>
         <p>Vous êtes maintenant inscrit(e) à la newsletter du Cabinet GESTORH. Vous recevrez nos conseils RH, psychologie et bien-être.</p>
-        <a href="https://gestorh.tg/desabonnement?email=${encodeURIComponent(data.email || "")}" class="btn" style="background:#888">Se désabonner</a>`,
+        <a href="https://cabinet-gestorh.com/desabonnement?email=${encodeURIComponent(data.email || "")}" class="btn" style="background:#888">Se désabonner</a>`,
       )
 
     case "newsletter_custom":
@@ -106,7 +106,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
         data.subject || "Newsletter GESTORH",
         `<h2>${data.subject || "Newsletter"}</h2>
         <div>${data.content || ""}</div>
-        <a href="https://gestorh.tg/desabonnement?email=${encodeURIComponent(data.email || "")}" class="btn" style="background:#888">Se désabonner</a>`,
+        <a href="https://cabinet-gestorh.com/desabonnement?email=${encodeURIComponent(data.email || "")}" class="btn" style="background:#888">Se désabonner</a>`,
       )
 
     case "test_results":
@@ -119,7 +119,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
           <strong>Résultat :</strong> ${data.result_name || "-"}
         </div>
         <p>${data.advice || ""}</p>
-        <a href="https://gestorh.tg/rendez-vous" class="btn">Prendre RDV</a>`,
+        <a href="https://cabinet-gestorh.com/rendez-vous" class="btn">Prendre RDV</a>`,
       )
 
     case "test_alert_admin":
@@ -181,7 +181,7 @@ Deno.serve(async (req) => {
         "Content-Type":  "application/json",
       },
       body: JSON.stringify({
-        from:    "GESTORH <noreply@gestorh.tg>",
+        from:    "GESTORH <noreply@cabinet-gestorh.com>",
         to:      [payload.to],
         subject,
         html,

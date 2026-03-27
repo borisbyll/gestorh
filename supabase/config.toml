@@ -1,4 +1,10 @@
 
+[functions.blog-ai]
+enabled = true
+verify_jwt = true
+import_map = "./functions/blog-ai/deno.json"
+entrypoint = "./functions/blog-ai/index.ts"
+
 [functions.chat-ai]
 enabled = true
 verify_jwt = true
@@ -34,7 +40,7 @@ entrypoint = "./functions/email-proxy/index.ts"
 
 [functions.email-proxy-public]
 enabled = true
-verify_jwt = true
+verify_jwt = false
 import_map = "./functions/email-proxy-public/deno.json"
 # Uncomment to specify a custom file path to the entrypoint.
 # Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx

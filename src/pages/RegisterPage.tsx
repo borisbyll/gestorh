@@ -36,7 +36,12 @@ export default function RegisterPage() {
         email:    data.email,
         password: data.password,
         options: {
-          data:        { nom: data.nom },
+          data: {
+            nom:        data.nom,
+            phone:      data.phone,
+            profession: data.profession,
+            newsletter: data.newsletter || false,
+          },
           emailRedirectTo: `${window.location.origin}/tests?unlock=1`,
         },
       })
@@ -44,16 +49,6 @@ export default function RegisterPage() {
 
       const userId = authData.user?.id
       if (!userId) throw new Error('Erreur création compte')
-
-      // Créer le profil
-      const { error: profileError } = await supabase.from('user_profiles').insert({
-        id:         userId,
-        nom:        data.nom,
-        phone:      data.phone,
-        profession: data.profession,
-        newsletter: data.newsletter || false,
-      })
-      if (profileError) console.error('Profile error:', profileError)
 
       // Abonner à la newsletter si coché
       if (data.newsletter) {

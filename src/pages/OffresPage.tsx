@@ -453,7 +453,7 @@ export default function OffresPage() {
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {modalites.map((m, i) => (
                   <motion.div key={m.duree} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }} transition={{ delay: i * 0.12, duration: 0.5 }}

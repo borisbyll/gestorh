@@ -41,7 +41,7 @@ export default function ContactPage() {
 
       await sendEmail({
         type: 'contact_received',
-        to:   'contact@gestorh.tg',
+        to:   'contact@cabinet-gestorh.com',
         data: {
           nom:     data.nom,
           email:   data.email,
@@ -78,8 +78,8 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <div className="wrap py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-16 items-start">
+      <div className="wrap py-10 md:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-8 lg:gap-16 items-start">
           <aside>
             <div className="mb-8"><OpenBadge/></div>
             {[
@@ -98,7 +98,7 @@ export default function ContactPage() {
                 </div>
               </div>
             ))}
-            <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-card mt-8" style={{ height: 220 }}>
+            <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-card mt-8 h-[200px] md:h-[220px]">
               <iframe src="https://maps.google.com/maps?q=6.17736,1.23508&z=15&output=embed"
                 title="GESTORH sur Google Maps" allowFullScreen loading="lazy"
                 className="w-full h-full border-0"/>

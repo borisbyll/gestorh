@@ -125,7 +125,7 @@ export default function HomePage() {
           style={{ backgroundImage: "url('/hero.jpg')" }}/>
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/95 via-navy/85 to-navy/20"/>
 
-        <div className="relative z-10 w-full px-6 md:px-16 py-24 md:py-28">
+        <div className="relative z-10 w-full px-6 md:px-16 py-16 md:py-28">
           <div className="max-w-[720px]">
 
             {/* Badge */}
@@ -136,7 +136,7 @@ export default function HomePage() {
 
             {/* Titre */}
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, delay: .2 }}
-              className="text-5xl md:text-7xl font-black text-white leading-[1.05] mb-6">
+              className="text-4xl md:text-7xl font-black text-white leading-[1.05] mb-6">
               Excellence<br/>Humaine &amp;<br/><span className="text-gradient">Performance RH</span>
             </motion.h1>
 
@@ -227,13 +227,13 @@ export default function HomePage() {
       <section className="section">
         <div className="wrap">
           <Reveal>
-            <div className="relative bg-navy rounded-3xl p-10 md:p-16 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="relative bg-navy rounded-3xl p-6 md:p-16 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
               <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue/30 blur-3xl pointer-events-none"/>
               <div className="relative z-10">
                 <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white/80 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-5">
                   Tests gratuits
                 </span>
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-3">
+                <h2 className="text-2xl md:text-4xl font-black text-white mb-3">
                   Évaluez votre situation<br/><span className="text-blue-300">en 2 minutes</span>
                 </h2>
                 <p className="text-white/50 text-sm">10 tests certifiés — Résultats immédiats</p>
@@ -294,7 +294,7 @@ export default function HomePage() {
       <section id="contact" className="section">
         <div className="wrap">
           <SectionHeader badge="Contact" title="Prendre" titleSpan="Rendez-vous"/>
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 lg:gap-16 items-start">
             <aside>
               <OpenBadge/>
               {[
@@ -380,7 +380,7 @@ export default function HomePage() {
       <section id="localisation" className="section bg-gray-50">
         <div className="wrap">
           <SectionHeader badge="Nous trouver" title="Notre" titleSpan="Cabinet"/>
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-8 lg:gap-12 items-center">
             <div>
               {[
                 { Icon: MapPin, label: 'Adresse',   val: <>Hédzranawoé, Rue N°4<br/>Près de la Rue 3353, Lomé — Togo</> },
@@ -399,7 +399,7 @@ export default function HomePage() {
                 <MapPin size={15}/> Itinéraire Google Maps
               </a>
             </div>
-            <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-card" style={{ height: '420px' }}>
+            <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-card h-[280px] md:h-[420px]">
               <iframe src="https://maps.google.com/maps?q=6.17736,1.23508&z=15&output=embed"
                 title="Localisation GESTORH" allowFullScreen loading="lazy"
                 className="w-full h-full border-0"/>

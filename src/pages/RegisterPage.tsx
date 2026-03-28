@@ -119,7 +119,7 @@ const needsConfirmation = !authData.session
           <div className="card p-8">
             <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="label">Nom complet *</label>
                   <input {...register('nom')} className={`input ${errors.nom ? 'input-err' : ''}`} placeholder="Jean Kodjo"/>

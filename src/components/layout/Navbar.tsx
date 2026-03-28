@@ -280,7 +280,7 @@ export default function Navbar() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * .04 }}>
-                    <Link to={l.to} onClick={(e) => handleAnchorClick(e, l.to)}
+                    <Link to={l.to} onClick={(e) => { handleAnchorClick(e, l.to); setOpen(false) }}
                       className={cn(
                         'flex items-center gap-2 px-4 py-3 rounded-2xl text-sm font-semibold transition-colors',
                         l.highlight

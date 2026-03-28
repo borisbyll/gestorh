@@ -324,7 +324,7 @@ export default function RdvPage() {
                         </div>
                       )}
                       {loadingSlots ? (
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                           {[1,2,3,4,5,6].map(i => <div key={i} className="h-10 bg-gray-100 rounded-xl animate-pulse"/>)}
                         </div>
                       ) : getAvailableSlots().length === 0 ? (
@@ -333,7 +333,7 @@ export default function RdvPage() {
                           <p className="text-gray-400 text-xs">Veuillez choisir une autre date</p>
                         </div>
                       ) : (
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                           {ALL_SLOTS.map(s => {
                             const booked = bookedSlots.includes(s)
                             return (

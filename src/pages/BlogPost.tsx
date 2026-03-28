@@ -161,7 +161,7 @@ export default function BlogPost() {
         })}</script>
       </Helmet>
 
-      <div className="wrap py-12 max-w-3xl">
+      <div className="wrap py-8 md:py-12 max-w-3xl">
 
         {/* Retour */}
         <Link to="/blog" className="inline-flex items-center gap-2 text-blue text-sm font-bold mb-8 bg-blue-soft px-4 py-2 rounded-xl hover:bg-blue/20 transition-colors">
@@ -173,7 +173,7 @@ export default function BlogPost() {
           <span className="inline-block text-xs font-extrabold tracking-widest uppercase px-3 py-1.5 rounded-full bg-brand-light text-brand-dark mb-4">
             {post.category}
           </span>
-          <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-5">{post.title}</h1>
+          <h1 className="text-2xl md:text-4xl font-black text-gray-900 leading-tight mb-5">{post.title}</h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 font-medium">
             <span className="font-bold text-gray-700">{post.author_name}</span>
             <span className="flex items-center gap-1.5"><Calendar size={13}/> {formatDate(post.created_at)}</span>
@@ -237,7 +237,7 @@ export default function BlogPost() {
         {related.length > 0 && (
           <div className="mt-12">
             <h3 className="text-xl font-black text-gray-900 mb-6">Articles similaires</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {related.map((r, i) => (
                 <Reveal key={r.id} delay={i * .08}>
                   <Link to={`/blog/${r.slug}`}

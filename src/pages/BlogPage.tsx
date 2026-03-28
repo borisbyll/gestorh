@@ -42,7 +42,7 @@ function PostCard({ post }: { post: Post }) {
   const color = CAT_COLORS[post.category] || 'bg-gray-100 text-gray-700'
   return (
     <article className="card-hover flex flex-col h-full overflow-hidden group">
-      <div className="h-48 bg-gradient-to-br from-navy to-navy-mid relative overflow-hidden flex-shrink-0">
+      <div className="h-40 md:h-48 bg-gradient-to-br from-navy to-navy-mid relative overflow-hidden flex-shrink-0">
         {post.cover_url
           ? <img src={post.cover_url} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"/>
           : <div className="w-full h-full flex items-center justify-center"><FileText size={40} className="text-white/20"/></div>
@@ -51,7 +51,7 @@ function PostCard({ post }: { post: Post }) {
           {post.category}
         </span>
       </div>
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-4 md:p-6 flex flex-col flex-1">
         <h2 className="font-black text-gray-900 text-base leading-snug mb-3 group-hover:text-navy transition-colors line-clamp-2">
           {post.title}
         </h2>
@@ -100,28 +100,28 @@ export default function BlogPage() {
         <meta name="description" content="Conseils experts en RH, psychologie, coaching et bien-être au travail."/>
       </Helmet>
 
-      <div className="bg-gradient-to-br from-navy-deep to-navy-mid py-10 md:py-14 px-5 text-center relative overflow-hidden">
+      <div className="bg-gradient-to-br from-navy-deep to-navy-mid py-12 md:py-20 px-5 text-center relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-blue/20 blur-3xl"/>
         </div>
         <div className="relative z-10">
           <span className="badge mb-4">Ressources gratuites</span>
-          <h1 className="h1 text-white mb-4">Blog <span className="text-gradient">RH & Bien-être</span></h1>
-          <p className="text-white/55 text-base max-w-lg mx-auto">Conseils pratiques rédigés par nos experts.</p>
+          <h1 className="text-3xl md:text-5xl font-black text-white mb-4">Blog <span className="text-gradient">RH & Bien-être</span></h1>
+          <p className="text-white/55 text-sm md:text-base max-w-lg mx-auto">Conseils pratiques rédigés par nos experts.</p>
         </div>
       </div>
 
       <div className="bg-white border-b border-gray-200 sticky top-[72px] z-10">
-        <div className="wrap py-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <div className="relative flex-shrink-0 w-full sm:w-64">
+        <div className="wrap py-3 flex flex-col gap-3">
+          <div className="relative w-full">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
             <input value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Rechercher…" className="input !py-2.5 !pl-9 !text-sm"/>
+              placeholder="Rechercher…" className="input !py-2.5 !pl-9 !text-sm w-full"/>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4">
             {CATS.map(c => (
               <button key={c} onClick={() => setCat(c)}
-                className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                className={`flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   cat === c ? 'bg-navy text-white' : 'text-gray-500 hover:text-navy hover:bg-blue-soft'
                 }`}>
                 {c}
@@ -131,10 +131,10 @@ export default function BlogPage() {
         </div>
       </div>
 
-      <div className="wrap py-16">
+      <div className="wrap py-8 md:py-16">
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[1,2,3].map(i => <div key={i} className="card h-80 animate-pulse bg-gray-100"/>)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            {[1,2,3].map(i => <div key={i} className="card h-64 md:h-80 animate-pulse bg-gray-100"/>)}
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-24 text-gray-400">
@@ -142,7 +142,7 @@ export default function BlogPage() {
             <p className="font-bold text-lg">Aucun article trouvé</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             {filtered.map((post, i) => (
               <Reveal key={post.id} delay={i * 0.07}>
                 <Link to={`/blog/${post.slug}`} className="block h-full">

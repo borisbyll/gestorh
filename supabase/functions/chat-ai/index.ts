@@ -1,4 +1,4 @@
-import Anthropic from 'npm:@anthropic-ai/sdk@0.24.3'
+import Anthropic from 'npm:@anthropic-ai/sdk@0.39.0'
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
       }))
 
     const res = await client.messages.create({
-      model:      'claude-sonnet-4-20250514',
+      model:      'claude-haiku-4-5-20251001',
       max_tokens: 500,
       system:     SYSTEM,
       messages:   safe,

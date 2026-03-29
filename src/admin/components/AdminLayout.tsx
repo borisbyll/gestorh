@@ -30,13 +30,6 @@ export default function AdminLayout() {
   })
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) { navigate('/admin/login'); return }
-      setEmail(data.user.email || '')
-    })
-  }, [navigate])
-
-  useEffect(() => {
     const loadBadges = async () => {
       const [rdvRes, contactsRes, avisRes, leadsRes] = await Promise.all([
         supabase.from('appointments').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
@@ -51,10 +44,15 @@ export default function AdminLayout() {
         leads:    leadsRes.count    || 0,
       })
     }
-    loadBadges()
-    const interval = setInterval(loadBadges, 30000)
-    return () => clearInterval(interval)
-  }, [])
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) { navigate('/admin/login'); return }
+      setEmail(data.user.email || '')
+      loadBadges()
+      const interval = setInterval(loadBadges, 30000)
+      return () => clearInterval(interval)
+    })
+  }, [navigate])
 
   const logout = async () => {
     await supabase.auth.signOut()

@@ -45,13 +45,21 @@ export default function AdminLayout() {
       })
     }
 
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) { navigate('/admin/login'); return }
-      setEmail(data.user.email || '')
-      loadBadges()
-      const interval = setInterval(loadBadges, 30000)
-      return () => clearInterval(interval)
+    let interval: ReturnType<typeof setInterval>
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) { navigate('/admin/login'); return }
+      setEmail(session.user.email || '')
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        loadBadges()
+        if (!interval) interval = setInterval(loadBadges, 30000)
+      }
     })
+
+    return () => {
+      subscription.unsubscribe()
+      clearInterval(interval)
+    }
   }, [navigate])
 
   const logout = async () => {

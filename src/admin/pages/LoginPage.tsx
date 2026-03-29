@@ -53,7 +53,7 @@ export default function LoginPage() {
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"/>
                 <input {...register('email')} type="email"
                   className={`input !pl-10 ${errors.email ? 'input-err' : ''}`}
-                  placeholder="admin@gestorh.tg"/>
+                  placeholder="contact@cabinet-gestorh.com"/>
               </div>
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>

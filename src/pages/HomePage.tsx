@@ -251,7 +251,7 @@ export default function HomePage() {
         <div className="wrap">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
             <SectionHeader badge="Témoignages" title="Ils nous font" titleSpan="confiance"/>
-            <button onClick={() => setShowForm(v => !v)} className="btn-outline flex-shrink-0 hidden md:flex">
+            <button onClick={() => setShowForm(v => !v)} className="btn-outline flex-shrink-0 flex">
               {showForm ? 'Annuler' : '⭐ Laisser un avis'}
             </button>
           </div>

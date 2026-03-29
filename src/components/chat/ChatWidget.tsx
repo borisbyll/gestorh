@@ -101,9 +101,9 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0,  scale: 1   }}
             exit={{    opacity: 0, y: 20, scale: .95 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed bottom-[170px] right-7 z-[800] w-[min(390px,calc(100vw-2rem))]
+            className="fixed top-[125px] right-7 z-[800] w-[min(390px,calc(100vw-2rem))]
                        bg-white rounded-3xl shadow-xl border border-gray-200 flex flex-col overflow-hidden"
-            style={{ height: 'min(560px,calc(100vh-320px))' }}
+            style={{ maxHeight: 'calc(100vh - 295px)' }}
           >
             {/* Header */}
             <div className="bg-navy px-5 py-4 flex items-center gap-3 flex-shrink-0">

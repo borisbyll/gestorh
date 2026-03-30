@@ -20,9 +20,10 @@ interface NavItem {
 export default function AdminLayout() {
   const { pathname } = useLocation()
   const navigate     = useNavigate()
-  const [open,   setOpen]   = useState(false)
-  const [email,  setEmail]  = useState('')
-  const [badges, setBadges] = useState({
+  const [open,    setOpen]    = useState(false)
+  const [email,   setEmail]   = useState('')
+  const [ready,   setReady]   = useState(false)
+  const [badges,  setBadges]  = useState({
     rdv:      0,
     contacts: 0,
     avis:     0,
@@ -50,6 +51,7 @@ export default function AdminLayout() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session) { navigate('/admin/login'); return }
       setEmail(session.user.email || '')
+      setReady(true)
       if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         loadBadges()
         if (!interval) interval = setInterval(loadBadges, 30000)
@@ -206,7 +208,11 @@ export default function AdminLayout() {
 
       {/* ── Main ── */}
       <main className="flex-1 lg:ml-64 pt-14 lg:pt-0 min-w-0">
-        <Outlet/>
+        {ready ? <Outlet/> : (
+          <div className="flex items-center justify-center h-40">
+            <div className="w-6 h-6 border-2 border-navy border-t-transparent rounded-full animate-spin"/>
+          </div>
+        )}
       </main>
     </div>
   )

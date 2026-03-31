@@ -18,13 +18,12 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Non autorisé' }), { status: 401, headers: CORS })
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!
-    const supabase = createClient(supabaseUrl, supabaseKey, {
-      global: { headers: { Authorization: authHeader } },
-    })
+    const supabaseUrl     = Deno.env.get('SUPABASE_URL')!
+    const serviceRoleKey  = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    const supabase = createClient(supabaseUrl, serviceRoleKey)
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const token = authHeader.replace('Bearer ', '')
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
     if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Token invalide' }), { status: 401, headers: CORS })
     }

@@ -151,7 +151,13 @@ Deno.serve(async (req) => {
     const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ''
     const wantsRdv = /(rendez.vous|rdv|disponib|créneau|créneaux|réserver|prendre rendez|quand puis|appointment)/i.test(lastMessage)
 
-    let system = SYSTEM_BASE
+    // Date du jour en français
+    const now = new Date()
+    const days = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi']
+    const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']
+    const todayStr = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`
+
+    let system = SYSTEM_BASE + `\n\nDATE ACTUELLE : ${todayStr}`
     if (wantsRdv) {
       const slots = await getAvailableSlots()
       system += `\n\nDISPONIBILITÉS ACTUELLES (7 prochains jours ouvrables) :\n${slots}\n\nSi le client choisit un créneau, invite-le à finaliser sa réservation sur cabinet-gestorh.com/rendez-vous`

@@ -32,18 +32,15 @@ export default function AdminLayout() {
 
   useEffect(() => {
     const loadBadges = async () => {
-      const [rdvRes, contactsRes, avisRes, leadsRes] = await Promise.all([
-        supabase.from('appointments').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('contacts').select('*', { count: 'exact', head: true }).eq('status', 'new'),
-        supabase.from('reviews').select('*', { count: 'exact', head: true }).eq('approved', false),
-        supabase.from('test_leads').select('*', { count: 'exact', head: true }).eq('converted', false).eq('result_level', 'danger'),
-      ])
-      setBadges({
-        rdv:      rdvRes.error   ? 0 : (rdvRes.count      || 0),
-        contacts: contactsRes.error ? 0 : (contactsRes.count || 0),
-        avis:     avisRes.error  ? 0 : (avisRes.count     || 0),
-        leads:    leadsRes.error ? 0 : (leadsRes.count     || 0),
-      })
+      const { data, error } = await supabase.rpc('get_admin_badges')
+      if (!error && data) {
+        setBadges({
+          rdv:      data.rdv      || 0,
+          contacts: data.contacts || 0,
+          avis:     data.avis     || 0,
+          leads:    data.leads    || 0,
+        })
+      }
     }
 
     let interval: ReturnType<typeof setInterval>

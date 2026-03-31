@@ -39,10 +39,10 @@ export default function AdminLayout() {
         supabase.from('test_leads').select('*', { count: 'exact', head: true }).eq('converted', false).eq('result_level', 'danger'),
       ])
       setBadges({
-        rdv:      rdvRes.count      || 0,
-        contacts: contactsRes.count || 0,
-        avis:     avisRes.count     || 0,
-        leads:    leadsRes.count    || 0,
+        rdv:      rdvRes.error   ? 0 : (rdvRes.count      || 0),
+        contacts: contactsRes.error ? 0 : (contactsRes.count || 0),
+        avis:     avisRes.error  ? 0 : (avisRes.count     || 0),
+        leads:    leadsRes.error ? 0 : (leadsRes.count     || 0),
       })
     }
 

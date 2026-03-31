@@ -39,10 +39,26 @@ const EMPTY: Post = {
 
 /* ── Appel IA via Edge Function sécurisée ── */
 async function callClaude(prompt: string): Promise<string> {
-  const { data, error } = await supabase.functions.invoke('blog-ai', {
-    body: { prompt },
-  })
-  if (error) throw new Error(error.message || 'Erreur IA')
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) throw new Error('Session expirée. Reconnectez-vous.')
+
+  const res = await fetch(
+    `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/blog-ai`,
+    {
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+        'apikey':        import.meta.env.VITE_SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ prompt }),
+    }
+  )
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: 'Erreur serveur' }))
+    throw new Error(err.error || `Erreur ${res.status}`)
+  }
+  const data = await res.json()
   return data?.content || ''
 }
 

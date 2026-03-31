@@ -11,6 +11,17 @@ interface Msg {
   ts:      Date
 }
 
+function formatMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s, '<ul class="list-disc pl-4 space-y-0.5">$1</ul>')
+    .replace(/\n{2,}/g, '</p><p class="mt-2">')
+    .replace(/\n/g, '<br/>')
+    .replace(/^(?!<)(.+)$/, '<p>$1</p>')
+}
+
 const WELCOME: Msg = {
   id: 'w', role: 'assistant', ts: new Date(),
   content: "Bonjour 👋 Je suis l'assistant GESTORH. Posez-moi vos questions sur nos services RH, psychologie et coaching !",
@@ -132,7 +143,10 @@ export default function ChatWidget() {
                     </div>
                   )}
                   <div className={m.role === 'user' ? 'bubble-user' : 'bubble-ai'}>
-                    <p className="whitespace-pre-wrap">{m.content}</p>
+                    {m.role === 'assistant'
+                      ? <div className="text-sm leading-relaxed space-y-1" dangerouslySetInnerHTML={{ __html: formatMarkdown(m.content) }}/>
+                      : <p className="whitespace-pre-wrap">{m.content}</p>
+                    }
                     <time className={cn('text-[.6rem] mt-1 block', m.role === 'user' ? 'text-white/50' : 'text-gray-400')}>
                       {m.ts.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                     </time>

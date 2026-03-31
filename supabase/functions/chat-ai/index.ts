@@ -1,4 +1,5 @@
 import Anthropic from 'npm:@anthropic-ai/sdk@0.39.0'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -7,32 +8,105 @@ const CORS = {
   'Content-Type':                 'application/json',
 }
 
-const SYSTEM = `Tu es l'assistant virtuel officiel du Cabinet GESTORH, situé à Lomé, Togo.
+const ALL_SLOTS = ['08:00','09:15','10:30','11:45','14:00','15:15','16:30']
+
+function isWeekend(dateStr: string): boolean {
+  const d = new Date(dateStr)
+  return d.getDay() === 0 || d.getDay() === 6
+}
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr)
+  const days = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi']
+  const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`
+}
+
+// Récupérer les créneaux disponibles pour les 7 prochains jours ouvrables
+async function getAvailableSlots(): Promise<string> {
+  try {
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    )
+
+    // Générer les 7 prochains jours ouvrables
+    const workDays: string[] = []
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    let d = new Date(today)
+    d.setDate(d.getDate() + 1) // commencer demain
+    while (workDays.length < 7) {
+      const str = d.toISOString().split('T')[0]
+      if (!isWeekend(str)) workDays.push(str)
+      d.setDate(d.getDate() + 1)
+    }
+
+    // Récupérer les réservations existantes
+    const { data: booked } = await supabase
+      .from('appointments')
+      .select('date, time_slot')
+      .in('date', workDays)
+      .in('status', ['pending', 'confirmed'])
+
+    const bookedMap: Record<string, Set<string>> = {}
+    for (const b of (booked || [])) {
+      if (!bookedMap[b.date]) bookedMap[b.date] = new Set()
+      bookedMap[b.date].add(b.time_slot)
+    }
+
+    // Construire le résumé des disponibilités
+    const lines: string[] = []
+    for (const day of workDays) {
+      const taken = bookedMap[day] || new Set()
+      const free = ALL_SLOTS.filter(s => !taken.has(s))
+      if (free.length === 0) {
+        lines.push(`- ${formatDate(day)} : complet`)
+      } else {
+        lines.push(`- ${formatDate(day)} : ${free.join(', ')}`)
+      }
+    }
+
+    return lines.join('\n')
+  } catch {
+    return 'Calendrier temporairement indisponible. Appelez le +228 98 91 23 69.'
+  }
+}
+
+const SYSTEM_BASE = `Tu es l'assistant virtuel officiel du Cabinet GESTORH, situé à Lomé, Togo.
+
+DIRECTEUR ET PSYCHOLOGUE PRINCIPAL :
+- Nom : Prudence T. LAWSON
+- Titre : Psychologue / Expert en Management d'Équipes / Directeur
+- Email : centregestorh@gmail.com
 
 SERVICES GESTORH :
-- Solutions RH (audit, recrutement, outils, prévention risques)
-- Coaching professionnel et leadership
-- Accompagnement psychologique et soutien moral
+- Développement professionnel : coaching, leadership, gestion de carrière
+- Bien-être personnel : accompagnement psychologique, soutien moral, thérapie individuelle
+- Solution RH : audit RH, recrutement, outils RH, prévention des risques
 - Thérapie de couple et famille
 - Tests et bilans diagnostics gratuits
 
 COORDONNÉES :
-- Adresse : Hédzranawoé, Rue N°4, Lomé, Togo
+- Adresse : Hédzranawoé, Rue N°4, 01 BP 3353 Lomé, Togo
 - Tél : +228 98 91 23 69 / +228 90 03 61 87
+- Email : contact@cabinet-gestorh.com
 - Horaires : Lun-Ven 08h-18h, Sam 09h-16h
 
 TON RÔLE :
-- Répondre chaleureusement aux questions sur nos services
-- Orienter vers le bon service selon la situation
+- Répondre chaleureusement aux questions sur les services du cabinet
+- Orienter vers le bon service selon la situation du client
+- Proposer des créneaux disponibles quand un client souhaite prendre rendez-vous
 - Encourager la prise de RDV quand c'est pertinent
 - Donner des conseils généraux sur le bien-être professionnel
 
 RÈGLES :
-- Jamais de diagnostic médical ou psychologique précis
+- Ne jamais poser de diagnostic médical ou psychologique précis
 - Ne jamais mentionner de concurrents
 - Toujours proposer un RDV si la situation semble sérieuse
 - Répondre en français, de façon chaleureuse et professionnelle
-- Maximum 3 paragraphes courts sauf si demande spécifique`
+- Maximum 3 paragraphes courts sauf si demande spécifique
+- Pour les RDV en ligne : diriger vers cabinet-gestorh.com/rendez-vous`
 
 // Rate limiting par IP + sessionId
 const rl = new Map<string, { n: number; reset: number }>()
@@ -45,7 +119,6 @@ function allowed(key: string, limit: number): boolean {
   e.n++; return true
 }
 
-// Nettoyer les entrées expirées toutes les heures
 setInterval(() => {
   const now = Date.now()
   for (const [k, v] of rl.entries()) {
@@ -63,7 +136,6 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Payload invalide' }), { status: 400, headers: CORS })
     }
 
-    // Rate limit par IP (15 req/heure) ET par session (20 req/heure)
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
               || req.headers.get('x-real-ip')
               || 'unknown'
@@ -73,6 +145,16 @@ Deno.serve(async (req) => {
     }
     if (!allowed(`sid:${sessionId || 'anon'}`, 20)) {
       return new Response(JSON.stringify({ error: 'Limite atteinte. Réessayez dans une heure.' }), { status: 429, headers: CORS })
+    }
+
+    // Détecter si le client parle de rendez-vous
+    const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ''
+    const wantsRdv = /(rendez.vous|rdv|disponib|créneau|créneaux|réserver|prendre rendez|quand puis|appointment)/i.test(lastMessage)
+
+    let system = SYSTEM_BASE
+    if (wantsRdv) {
+      const slots = await getAvailableSlots()
+      system += `\n\nDISPONIBILITÉS ACTUELLES (7 prochains jours ouvrables) :\n${slots}\n\nSi le client choisit un créneau, invite-le à finaliser sa réservation sur cabinet-gestorh.com/rendez-vous`
     }
 
     const client = new Anthropic({ apiKey: Deno.env.get('ANTHROPIC_API_KEY')! })
@@ -86,8 +168,8 @@ Deno.serve(async (req) => {
 
     const res = await client.messages.create({
       model:      'claude-haiku-4-5-20251001',
-      max_tokens: 300,
-      system:     SYSTEM,
+      max_tokens: 400,
+      system,
       messages:   safe,
     })
 

@@ -73,10 +73,11 @@ export default function BlogAdminPage() {
   const [tab,       setTab]       = useState<'content'|'seo'>('content')
 
   /* IA */
-  const [aiOpen,    setAiOpen]    = useState(false)
-  const [aiPrompt,  setAiPrompt]  = useState('')
-  const [aiLoading, setAiLoading] = useState(false)
-  const [aiAction,  setAiAction]  = useState<'generate'|'improve'|'seo'|'excerpt'>('generate')
+  const [aiOpen,      setAiOpen]      = useState(false)
+  const [aiPrompt,    setAiPrompt]    = useState('')
+  const [aiLoading,   setAiLoading]   = useState(false)
+  const [aiAction,    setAiAction]    = useState<'generate'|'improve'|'seo'|'excerpt'>('generate')
+  const [confirmDelete, setConfirmDelete] = useState<Post | null>(null)
 
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -287,10 +288,11 @@ Retourne uniquement le résumé, sans guillemets ni ponctuation finale.`
     load()
   }
 
-  const deletePost = async (id: string) => {
-    if (!confirm('Supprimer cet article ?')) return
-    await supabase.from('blog_posts').delete().eq('id', id)
-    toast.success('Supprimé')
+  const deletePost = async () => {
+    if (!confirmDelete) return
+    await supabase.from('blog_posts').delete().eq('id', confirmDelete.id)
+    toast.success('Article supprimé')
+    setConfirmDelete(null)
     load()
   }
 
@@ -597,11 +599,36 @@ Retourne uniquement le résumé, sans guillemets ni ponctuation finale.`
                     {post.published ? <><Eye size={12}/> Publié</> : <><EyeOff size={12}/> Brouillon</>}
                   </button>
                   <button onClick={() => openEdit(post)} className="p-2 rounded-lg hover:bg-blue-soft text-blue transition-colors"><Edit size={15}/></button>
-                  <button onClick={() => deletePost(post.id)} className="p-2 rounded-lg hover:bg-red-50 text-red-400 transition-colors"><Trash2 size={15}/></button>
+                  <button onClick={() => setConfirmDelete(post)} className="p-2 rounded-lg hover:bg-red-50 text-red-400 transition-colors"><Trash2 size={15}/></button>
                 </div>
               </motion.div>
             )
           })}
+        </div>
+      )}
+
+      {/* Modale de confirmation suppression */}
+      {confirmDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm">
+            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+              <Trash2 size={22} className="text-red-500"/>
+            </div>
+            <h3 className="text-base font-black text-gray-900 text-center mb-1">Supprimer l'article ?</h3>
+            <p className="text-sm text-gray-500 text-center mb-6">
+              « {confirmDelete.title} » sera définitivement supprimé.
+            </p>
+            <div className="flex gap-3">
+              <button onClick={() => setConfirmDelete(null)}
+                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors">
+                Annuler
+              </button>
+              <button onClick={deletePost}
+                className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-sm font-bold hover:bg-red-600 transition-colors">
+                Supprimer
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

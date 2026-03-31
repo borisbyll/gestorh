@@ -34,15 +34,24 @@ RÈGLES :
 - Répondre en français, de façon chaleureuse et professionnelle
 - Maximum 3 paragraphes courts sauf si demande spécifique`
 
+// Rate limiting par IP + sessionId
 const rl = new Map<string, { n: number; reset: number }>()
 
-function allowed(sid: string): boolean {
+function allowed(key: string, limit: number): boolean {
   const now = Date.now()
-  const e = rl.get(sid)
-  if (!e || now > e.reset) { rl.set(sid, { n: 1, reset: now + 3_600_000 }); return true }
-  if (e.n >= 20) return false
+  const e = rl.get(key)
+  if (!e || now > e.reset) { rl.set(key, { n: 1, reset: now + 3_600_000 }); return true }
+  if (e.n >= limit) return false
   e.n++; return true
 }
+
+// Nettoyer les entrées expirées toutes les heures
+setInterval(() => {
+  const now = Date.now()
+  for (const [k, v] of rl.entries()) {
+    if (now > v.reset) rl.delete(k)
+  }
+}, 3_600_000)
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS })
@@ -54,7 +63,15 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Payload invalide' }), { status: 400, headers: CORS })
     }
 
-    if (!allowed(sessionId || 'anon')) {
+    // Rate limit par IP (15 req/heure) ET par session (20 req/heure)
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+              || req.headers.get('x-real-ip')
+              || 'unknown'
+
+    if (!allowed(`ip:${ip}`, 15)) {
+      return new Response(JSON.stringify({ error: 'Limite atteinte. Réessayez dans une heure.' }), { status: 429, headers: CORS })
+    }
+    if (!allowed(`sid:${sessionId || 'anon'}`, 20)) {
       return new Response(JSON.stringify({ error: 'Limite atteinte. Réessayez dans une heure.' }), { status: 429, headers: CORS })
     }
 
@@ -69,7 +86,7 @@ Deno.serve(async (req) => {
 
     const res = await client.messages.create({
       model:      'claude-haiku-4-5-20251001',
-      max_tokens: 500,
+      max_tokens: 300,
       system:     SYSTEM,
       messages:   safe,
     })

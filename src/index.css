@@ -58,6 +58,11 @@
 
 .prose-blog h2 { @apply text-2xl font-black text-navy mt-10 mb-4; }
 .prose-blog h3 { @apply text-xl font-bold mt-8 mb-3; }
-.prose-blog p  { @apply mb-5 text-gray-700 leading-relaxed; }
+.prose-blog p  { @apply mb-5 text-gray-700 leading-relaxed text-justify hyphens-auto; }
+.prose-blog ul { @apply mb-5 pl-5 space-y-2; }
+.prose-blog ul li { @apply text-gray-700 list-disc leading-relaxed; }
+.prose-blog ol { @apply mb-5 pl-5 space-y-2; }
+.prose-blog ol li { @apply text-gray-700 list-decimal leading-relaxed; }
 .prose-blog blockquote { @apply border-l-4 border-brand pl-5 italic text-gray-500 my-6 text-lg; }
 .prose-blog strong { @apply font-bold text-gray-900; }
+.prose-blog a { @apply text-blue underline underline-offset-2 hover:text-navy transition-colors; }

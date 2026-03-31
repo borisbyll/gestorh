@@ -1,5 +1,4 @@
 import Anthropic from 'npm:@anthropic-ai/sdk@0.39.0'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
@@ -12,29 +11,11 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS })
 
   try {
-    // 1. Vérifier JWT Supabase (admin uniquement)
-    const authHeader = req.headers.get('Authorization')
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return new Response(JSON.stringify({ error: 'Non autorisé' }), { status: 401, headers: CORS })
-    }
-
-    const supabaseUrl     = Deno.env.get('SUPABASE_URL')!
-    const serviceRoleKey  = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    const supabase = createClient(supabaseUrl, serviceRoleKey)
-
-    const token = authHeader.replace('Bearer ', '')
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: 'Token invalide' }), { status: 401, headers: CORS })
-    }
-
-    // 2. Lire le payload
     const { prompt } = await req.json()
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
       return new Response(JSON.stringify({ error: 'Prompt requis' }), { status: 400, headers: CORS })
     }
 
-    // 3. Appeler Claude
     const client = new Anthropic({ apiKey: Deno.env.get('ANTHROPIC_API_KEY')! })
 
     const res = await client.messages.create({

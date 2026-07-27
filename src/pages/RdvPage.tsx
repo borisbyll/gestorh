@@ -20,6 +20,7 @@ const SERVICES = [
   'Bilan de compétences',
   'Thérapie de couple & famille',
   'Test & Bilan approfondi',
+  'Autre',
 ]
 
 const ALL_SLOTS = [

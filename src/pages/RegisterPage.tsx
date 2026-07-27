@@ -66,6 +66,8 @@ export default function RegisterPage() {
             to:   data.email,
             data: {
               name:     data.nom,
+              email:    data.email,
+              token,
               testsUrl: `${window.location.origin}/tests`,
             },
           })

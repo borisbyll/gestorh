@@ -13,6 +13,7 @@ interface Subscriber {
   created_at: string
   email:      string
   confirmed:  boolean
+  token:      string
 }
 
 interface Campaign {
@@ -72,7 +73,7 @@ export default function NewsletterAdminPage() {
           await sendEmail({
             type: 'newsletter_custom',
             to:   sub.email,
-            data: { subject, content },
+            data: { subject, content, email: sub.email, token: sub.token },
           })
           sent++
         } catch {

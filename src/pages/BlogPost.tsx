@@ -2,6 +2,7 @@ import { useState, useEffect }  from 'react'
 import { useParams, Link }      from 'react-router-dom'
 import { Helmet }               from 'react-helmet-async'
 import { ArrowLeft, Clock, Eye, Calendar, Check, Facebook, Linkedin, MessageCircle, Link as LinkIcon, FileText } from 'lucide-react'
+import DOMPurify                from 'dompurify'
 import { supabase }             from '@/lib/supabase'
 import { formatDate }           from '@/lib/utils'
 import NewsletterForm           from '@/components/newsletter/NewsletterForm'
@@ -189,7 +190,7 @@ export default function BlogPost() {
         }
 
         {/* Contenu */}
-        <div className="prose-blog" dangerouslySetInnerHTML={{ __html: post.content }}/>
+        <div className="prose-blog" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}/>
 
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (

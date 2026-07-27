@@ -51,6 +51,8 @@ export default function NewsletterForm({ dark = false }: { dark?: boolean }) {
         to:   data.email,
         data: {
           name:     '',
+          email:    data.email,
+          token,
           testsUrl: `${window.location.origin}/tests`,
         },
       })

@@ -8,6 +8,16 @@ const CORS = {
   'Content-Type':                 'application/json',
 }
 
+// Limitation de débit par admin (génération IA coûteuse en tokens)
+const rl = new Map<string, { n: number; reset: number }>()
+function allowed(key: string, limit: number): boolean {
+  const now = Date.now()
+  const e = rl.get(key)
+  if (!e || now > e.reset) { rl.set(key, { n: 1, reset: now + 3_600_000 }); return true }
+  if (e.n >= limit) return false
+  e.n++; return true
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS })
 
@@ -38,6 +48,10 @@ Deno.serve(async (req) => {
 
     if (profile?.role !== 'admin') {
       return new Response(JSON.stringify({ error: 'Accès refusé' }), { status: 403, headers: CORS })
+    }
+
+    if (!allowed(user.id, 30)) {
+      return new Response(JSON.stringify({ error: 'Limite atteinte. Réessayez dans une heure.' }), { status: 429, headers: CORS })
     }
 
     // Traiter la requête

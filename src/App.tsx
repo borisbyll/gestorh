@@ -28,8 +28,15 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [auth,    setAuth]    = useState<boolean | null>(null)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setAuth(!!data.session)
+    supabase.auth.getSession().then(async ({ data }) => {
+      const userId = data.session?.user.id
+      if (!userId) { setAuth(false); return }
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('role')
+        .eq('id', userId)
+        .single()
+      setAuth(profile?.role === 'admin')
     })
   }, [])
 

@@ -40,10 +40,15 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS })
 
   try {
-    // 1. Récupérer l'IP
+    // 1. Récupérer l'IP — x-real-ip est posé par la plateforme (non falsifiable) ;
+    // x-forwarded-for peut contenir une valeur arbitraire ajoutée par l'appelant,
+    // donc on prend le dernier maillon (le plus proche de notre edge) en dernier recours.
+    const xff = req.headers.get("x-forwarded-for")
+    const xffParts = xff?.split(",").map(s => s.trim()).filter(Boolean)
     const ip =
       req.headers.get("cf-connecting-ip") ||
-      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      req.headers.get("x-real-ip") ||
+      (xffParts && xffParts.length > 0 ? xffParts[xffParts.length - 1] : undefined) ||
       "unknown"
 
     // 2. Rate limiting par IP

@@ -9,17 +9,20 @@ const CORS = {
 
 const JSON_HEADERS = { ...CORS, "Content-Type": "application/json" }
 
-// Types d'emails autorisés depuis le frontend
-const ALLOWED_TYPES = [
+// Types réservés à l'équipe admin (envoyés depuis les pages /admin)
+const ADMIN_ONLY_TYPES = [
   "newsletter_welcome",
   "newsletter_custom",
   "rdv_confirmation",
   "rdv_confirmed",
   "rdv_cancelled",
   "contact_received",
-  "test_results",
-  "test_alert_admin",
 ]
+// Types que n'importe quel utilisateur connecté peut déclencher lui-même
+// (résultats de son propre test, alerte admin générée par son propre résultat)
+const SELF_SERVICE_TYPES = ["test_results", "test_alert_admin"]
+const ALLOWED_TYPES = [...ADMIN_ONLY_TYPES, ...SELF_SERVICE_TYPES]
+const ADMIN_ALERT_EMAIL = "contact@gestorh.tg"
 
 // Rate limiting simple en mémoire
 const rateLimitMap = new Map<string, { count: number; reset: number }>()
@@ -57,6 +60,14 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Token invalide" }), { status: 401, headers: JSON_HEADERS })
     }
 
+    // 1bis. Déterminer le rôle — seul un admin peut envoyer les types "ADMIN_ONLY_TYPES"
+    const { data: profile } = await supabase
+      .from("user_profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single()
+    const isAdmin = profile?.role === "admin"
+
     // 2. Rate limiting par utilisateur (20 emails par heure)
     if (!checkRateLimit(user.id, 20, 3600000)) {
       return new Response(JSON.stringify({ error: "Limite atteinte" }), { status: 429, headers: JSON_HEADERS })
@@ -75,9 +86,18 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "JSON invalide" }), { status: 400, headers: JSON_HEADERS })
     }
 
-    // 4. Valider le type d'email
+    // 4. Valider le type d'email — un non-admin ne peut déclencher que ses propres notifications
     if (!ALLOWED_TYPES.includes(payload.type)) {
       return new Response(JSON.stringify({ error: "Type non autorise" }), { status: 403, headers: JSON_HEADERS })
+    }
+    if (!isAdmin) {
+      if (ADMIN_ONLY_TYPES.includes(payload.type)) {
+        return new Response(JSON.stringify({ error: "Type non autorise" }), { status: 403, headers: JSON_HEADERS })
+      }
+      // Empêche un utilisateur de faire envoyer un email arbitraire à un tiers
+      // en se faisant passer pour un résultat de test qui ne serait pas le sien
+      if (payload.type === "test_results") payload.to = user.email!
+      if (payload.type === "test_alert_admin") payload.to = ADMIN_ALERT_EMAIL
     }
 
     // 5. Valider l'email destinataire

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion }          from 'framer-motion'
+import DOMPurify           from 'dompurify'
 import { Plus, Edit, Trash2, Eye, EyeOff, Save, X, Clock, Image, Sparkles, Loader2, ChevronDown, FileText } from 'lucide-react'
 import { supabase }        from '@/lib/supabase'
 import { formatDate }      from '@/lib/utils'
@@ -201,7 +202,7 @@ Retourne uniquement le résumé, sans guillemets ni ponctuation finale.`
       const result = await callClaude(prompt)
 
       if (aiAction === 'generate' || aiAction === 'improve') {
-        setEditing(e => e ? { ...e, content: result } : e)
+        setEditing(e => e ? { ...e, content: DOMPurify.sanitize(result) } : e)
         toast.success('Contenu généré !')
 
       } else if (aiAction === 'seo') {
@@ -249,7 +250,7 @@ Retourne uniquement le résumé, sans guillemets ni ponctuation finale.`
     try {
       const tags = tagsInput.split(',').map(t => t.trim()).filter(Boolean)
       const slug = editing.slug || slugify(editing.title)
-      const payload = { ...editing, slug, tags, published: publish ?? editing.published }
+      const payload = { ...editing, slug, tags, content: DOMPurify.sanitize(editing.content), published: publish ?? editing.published }
 
       if (editing.id) {
         const { error } = await supabase.from('blog_posts').update(payload).eq('id', editing.id)

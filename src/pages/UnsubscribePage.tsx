@@ -8,14 +8,13 @@ export default function UnsubscribePage() {
   const [params]  = useSearchParams()
   const [status,  setStatus]  = useState<'loading'|'success'|'error'>('loading')
   const email = params.get('email')
+  const token = params.get('token')
 
   useEffect(() => {
-    if (!email) { setStatus('error'); return }
-    supabase.from('newsletter_subscribers')
-      .delete()
-      .eq('email', email)
-      .then(({ error }) => setStatus(error ? 'error' : 'success'))
-  }, [email])
+    if (!email || !token) { setStatus('error'); return }
+    supabase.rpc('unsubscribe_newsletter', { p_email: email, p_token: token })
+      .then(({ data, error }) => setStatus(error || !data ? 'error' : 'success'))
+  }, [email, token])
 
   return (
     <>

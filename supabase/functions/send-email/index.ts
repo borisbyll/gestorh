@@ -16,14 +16,20 @@ const ALLOWED_TYPES = [
   "test_alert_admin",
 ]
 
+// Ces champs sont du texte libre saisi par un visiteur (formulaire de contact,
+// RDV, newsletter…) : ils ne sont jamais censés contenir du HTML. On échappe
+// systématiquement plutôt que de tenter de bloquer des motifs dangereux au cas
+// par cas — un filtre par liste noire (ex. regex sur les attributs on*=) reste
+// toujours contournable (ex. attribut sans guillemets).
 function sanitize(str: string): string {
-  return str
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
-    .replace(/<object[\s\S]*?<\/object>/gi, "")
-    .replace(/on\w+\s*=\s*["'][^"']*["']/gi, "")
-    .replace(/javascript:/gi, "")
+  const escaped = str
     .slice(0, 2000)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+  return escaped.replace(/\n/g, "<br>")
 }
 
 function buildEmailHtml(type: string, data: Record<string, string> = {}): { subject: string; html: string } {
@@ -89,7 +95,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
           <strong>Service :</strong> ${data.service || "-"}
         </div>
         <p><strong>Message :</strong></p>
-        <p>${(data.message || "").replace(/\n/g, "<br>")}</p>`,
+        <p>${data.message || ""}</p>`,
       )
 
     case "newsletter_welcome":
@@ -98,7 +104,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
         `<h2>Bienvenue !</h2>
         <p>Bonjour <strong>${data.nom || ""},</strong></p>
         <p>Vous êtes maintenant inscrit(e) à la newsletter du Cabinet GESTORH. Vous recevrez nos conseils RH, psychologie et bien-être.</p>
-        <a href="https://cabinet-gestorh.com/desabonnement?email=${encodeURIComponent(data.email || "")}" class="btn" style="background:#888">Se désabonner</a>`,
+        <a href="https://cabinet-gestorh.com/desabonnement?email=${encodeURIComponent(data.email || "")}&token=${encodeURIComponent(data.token || "")}" class="btn" style="background:#888">Se désabonner</a>`,
       )
 
     case "newsletter_custom":
@@ -106,7 +112,7 @@ function buildEmailHtml(type: string, data: Record<string, string> = {}): { subj
         data.subject || "Newsletter GESTORH",
         `<h2>${data.subject || "Newsletter"}</h2>
         <div>${data.content || ""}</div>
-        <a href="https://cabinet-gestorh.com/desabonnement?email=${encodeURIComponent(data.email || "")}" class="btn" style="background:#888">Se désabonner</a>`,
+        <a href="https://cabinet-gestorh.com/desabonnement?email=${encodeURIComponent(data.email || "")}&token=${encodeURIComponent(data.token || "")}" class="btn" style="background:#888">Se désabonner</a>`,
       )
 
     case "test_results":

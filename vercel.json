@@ -44,7 +44,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src 'self' https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data: https://ziqwolobygmxgusimcxq.supabase.co; connect-src 'self' https://ziqwolobygmxgusimcxq.supabase.co wss://ziqwolobygmxgusimcxq.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src 'self' https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data: https://ziqwolobygmxgusimcxq.supabase.co; connect-src 'self' https://ziqwolobygmxgusimcxq.supabase.co wss://ziqwolobygmxgusimcxq.supabase.co; frame-src https://maps.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
         }
       ]
     }

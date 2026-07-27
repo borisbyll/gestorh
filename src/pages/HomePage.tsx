@@ -103,14 +103,6 @@ export default function HomePage() {
     } catch { toast.error('Erreur. Contactez-nous via WhatsApp.') }
   }
 
-  const STATIC_REVIEWS = [
-    { id: 's1', author_name: 'Directeur Général',  author_role: 'Secteur BTP — Togo',       content: 'Une restructuration qui a sauvé notre climat social. La productivité a suivi immédiatement.',                      rating: 5, service: 'Solutions RH'  },
-    { id: 's2', author_name: 'Responsable RH',      author_role: 'Institution Financière',   content: "L'approche psychologique du cabinet est unique. Un soutien précieux pour nos cadres sous pression.",               rating: 5, service: 'Psychologie'   },
-    { id: 's3', author_name: 'Promoteur PME',        author_role: 'Secteur Logistique',       content: "Un coaching qui m'a permis de retrouver une vision claire et de mieux déléguer.",                                  rating: 5, service: 'Coaching Pro'  },
-  ]
-
-  const displayReviews = reviews.length > 0 ? reviews : STATIC_REVIEWS
-
   return (
     <>
       <Helmet>
@@ -269,7 +261,7 @@ export default function HomePage() {
           </AnimatePresence>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {displayReviews.map((r, i) => (
+            {reviews.map((r, i) => (
               <Reveal key={r.id} delay={i * .08}>
                 <article className="card-hover p-8 flex flex-col gap-4 h-full">
                   <div className="flex gap-0.5">

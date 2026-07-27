@@ -312,7 +312,7 @@ export default function TestsPage() {
           if (result.resLevel === 'danger') {
             await supabase.functions.invoke('email-proxy', {
               body: JSON.stringify({
-                type: 'test_alert_admin', to: 'contact@gestorh.tg',
+                type: 'test_alert_admin', to: 'contact@cabinet-gestorh.com',
                 data: { nom: profile?.nom || '', email, phone: profile?.phone || '-',
                   profession: profile?.profession || '-', testTitle: result.testTitle,
                   score: String(result.pct), resName: result.resName },
@@ -431,7 +431,7 @@ export default function TestsPage() {
               await supabase.functions.invoke('email-proxy', {
                 body: JSON.stringify({
                   type: 'test_alert_admin',
-                  to:   'contact@gestorh.tg',
+                  to:   'contact@cabinet-gestorh.com',
                   data: {
                     nom:        profile?.nom        || '',
                     email:      session.user.email  || '',

@@ -22,7 +22,7 @@ const ADMIN_ONLY_TYPES = [
 // (résultats de son propre test, alerte admin générée par son propre résultat)
 const SELF_SERVICE_TYPES = ["test_results", "test_alert_admin"]
 const ALLOWED_TYPES = [...ADMIN_ONLY_TYPES, ...SELF_SERVICE_TYPES]
-const ADMIN_ALERT_EMAIL = "contact@gestorh.tg"
+const ADMIN_ALERT_EMAIL = "contact@cabinet-gestorh.com"
 
 // Rate limiting simple en mémoire
 const rateLimitMap = new Map<string, { count: number; reset: number }>()

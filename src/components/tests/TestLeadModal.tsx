@@ -75,7 +75,7 @@ export default function TestLeadModal({ result, onClose, onDone }: Props) {
       })
 
       // Email résultats
-      await supabase.functions.invoke('send-email', {
+      await supabase.functions.invoke('email-proxy', {
         body: JSON.stringify({
           type: 'test_results',
           to:   userEmail,
@@ -96,10 +96,10 @@ export default function TestLeadModal({ result, onClose, onDone }: Props) {
 
       // Alerte admin si critique
       if (result.resLevel === 'danger') {
-        await supabase.functions.invoke('send-email', {
+        await supabase.functions.invoke('email-proxy', {
           body: JSON.stringify({
             type: 'test_alert_admin',
-            to:   'contact@gestorh.tg',
+            to:   'contact@cabinet-gestorh.com',
             data: {
               nom:        profile?.nom        || userEmail,
               email:      userEmail,

@@ -207,7 +207,7 @@ export default function RdvPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'contact_received',
-          to:   'contact@gestorh.tg',
+          to:   'contact@cabinet-gestorh.com',
           data: {
             nom:     data.nom,
             email:   data.email,

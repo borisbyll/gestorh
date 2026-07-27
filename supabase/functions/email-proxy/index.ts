@@ -106,19 +106,9 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Email invalide" }), { status: 400, headers: JSON_HEADERS })
     }
 
-    // 6. Sanitiser les données
-    const sanitize = (str: string) => str
-      .replace(/<script[\s\S]*?<\/script>/gi, "")
-      .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
-      .replace(/<object[\s\S]*?<\/object>/gi, "")
-      .replace(/on\w+\s*=\s*["'][^"']*["']/gi, "")
-      .replace(/javascript:/gi, "")
-      .slice(0, 2000)
-    if (payload.data) {
-      for (const key of Object.keys(payload.data)) {
-        payload.data[key] = sanitize(String(payload.data[key]))
-      }
-    }
+    // 6. La sanitisation (échappement HTML) est faite dans send-email, juste
+    // avant construction du HTML — la faire ici aussi la ferait échapper deux
+    // fois (ex: "&lt;" redevient "&amp;lt;" à l'affichage).
 
     // 7. Appeler send-email avec le secret interne
     const INTERNAL_SECRET = Deno.env.get("INTERNAL_SECRET")!

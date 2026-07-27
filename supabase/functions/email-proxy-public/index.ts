@@ -29,13 +29,6 @@ function checkRateLimit(ip: string): boolean {
   return true
 }
 
-function sanitize(str: string): string {
-  return str
-    .replace(/<script[^>]*>.*?<\/script>/gi, "")
-    .replace(/<[^>]+>/g, "")
-    .slice(0, 2000)
-}
-
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS })
 
@@ -95,12 +88,9 @@ serve(async (req) => {
       )
     }
 
-    // 6. Sanitiser toutes les données
-    if (payload.data) {
-      for (const key of Object.keys(payload.data)) {
-        payload.data[key] = sanitize(String(payload.data[key]))
-      }
-    }
+    // 6. La sanitisation (échappement HTML) est faite dans send-email, juste
+    // avant construction du HTML — la faire ici aussi la ferait échapper deux
+    // fois (ex: "&lt;" redevient "&amp;lt;" à l'affichage).
 
     // 7. Appeler send-email avec le secret interne
     const INTERNAL_SECRET = Deno.env.get("INTERNAL_SECRET")!

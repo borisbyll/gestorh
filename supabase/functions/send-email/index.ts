@@ -170,27 +170,28 @@ Deno.serve(async (req) => {
       safeData[k] = sanitize(String(v))
     }
 
-    // 4. Construire et envoyer l'email via Resend
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!
+    // 4. Construire et envoyer l'email via Brevo
+    const BREVO_API_KEY = Deno.env.get("BREVO_API_KEY")!
     const { subject, html } = buildEmailHtml(payload.type, safeData)
 
-    const resendRes = await fetch("https://api.resend.com/emails", {
+    const brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
-        "Content-Type":  "application/json",
+        "api-key":     BREVO_API_KEY,
+        "Content-Type": "application/json",
+        "Accept":       "application/json",
       },
       body: JSON.stringify({
-        from:    "GESTORH <noreply@cabinet-gestorh.com>",
-        to:      [payload.to],
+        sender:      { name: "GESTORH", email: "noreply@cabinet-gestorh.com" },
+        to:          [{ email: payload.to }],
         subject,
-        html,
+        htmlContent: html,
       }),
     })
 
-    if (!resendRes.ok) {
-      const err = await resendRes.text()
-      console.error("[send-email] Resend error:", err)
+    if (!brevoRes.ok) {
+      const err = await brevoRes.text()
+      console.error("[send-email] Brevo error:", err)
       throw new Error("Erreur envoi email")
     }
 
